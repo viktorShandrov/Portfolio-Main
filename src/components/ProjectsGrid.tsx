@@ -22,7 +22,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, onSelectPr
       </div>
 
       {/* Grid of Projects */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 justify-items-center">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5 justify-items-center">
         {projects.map((project, index) => {
           // The first image in the array (images[0]) is automatically the main cover!
           const coverImage = project.images?.[0] || project.thumbnail;
@@ -36,10 +36,10 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, onSelectPr
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onSelectProject(project)}
-              className="cursor-pointer group w-full max-w-[280px] transition-all duration-200"
+              className="cursor-pointer group w-full transition-all duration-200"
             >
               {/* White Rounded Project Card */}
-              <div className="bg-white rounded-2xl sm:rounded-3xl p-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border border-slate-200/80 group-hover:border-[#00a8ff]/50 group-hover:shadow-[0_12px_28px_rgba(0,168,255,0.15)] transition-all overflow-hidden flex flex-col">
+              <div className="bg-white rounded-2xl p-2.5 sm:p-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border border-slate-200/80 group-hover:border-[#00a8ff]/50 group-hover:shadow-[0_12px_28px_rgba(0,168,255,0.15)] transition-all overflow-hidden flex flex-col h-full">
                 
                 {/* Project Mockup / Screenshot Container */}
                 <div className="relative aspect-[16/10] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-slate-900/90 border border-slate-200/80 shadow-inner flex items-center justify-center p-1">
