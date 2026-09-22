@@ -151,7 +151,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
         className="relative w-full h-full flex items-end justify-end pointer-events-none"
       >
         <img
-          src="/assets/viktor_exact_transparent.png"
+          src="/assets/blue.png"
           alt="Виктор Шандров"
           className="w-auto h-auto max-h-[500px] sm:max-h-[600px] lg:max-h-[85vh] xl:max-h-[92vh] object-contain object-bottom drop-shadow-[0_15px_35px_rgba(0,0,0,0.15)] pointer-events-auto transition-transform duration-500"
         />

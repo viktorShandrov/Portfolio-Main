@@ -350,7 +350,7 @@ export const HeaderHero: React.FC<HeaderHeroProps> = ({ onNavigateSection, activ
         >
           <div className="relative w-full flex items-end justify-end m-0 p-0">
             <img
-              src="/assets/viktor_exact_transparent.png"
+              src="/assets/blue.jpeg"
               alt="Виктор Шандров"
               className="w-auto h-auto max-h-[500px] sm:max-h-[560px] lg:max-h-[620px] object-contain object-bottom drop-shadow-[0_10px_25px_rgba(0,0,0,0.12)] m-0 p-0"
             />
