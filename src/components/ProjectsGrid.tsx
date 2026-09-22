@@ -10,9 +10,9 @@ interface ProjectsGridProps {
 
 export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, onSelectProject }) => {
   return (
-    <div className="w-full max-w-[840px] mx-auto px-2 sm:px-4 py-2 sm:py-4">
+    <div className="w-full max-w-[760px] mx-auto px-2 sm:px-4 py-1 sm:py-2">
       {/* "PROJECTS" Section Heading */}
-      <div className="text-center mb-3 sm:mb-5">
+      <div className="text-center mb-3 sm:mb-4">
         <h2 className="text-[#0077b6] font-black text-xl sm:text-2xl tracking-widest uppercase drop-shadow-xs">
           PROJECTS
         </h2>
@@ -21,8 +21,8 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, onSelectPr
         </p>
       </div>
 
-      {/* Grid of Projects */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5 justify-items-center">
+      {/* Grid of Projects (Max 2 items per row = 2x2 grid) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {projects.map((project, index) => {
           // The first image in the array (images[0]) is automatically the main cover!
           const coverImage = project.images?.[0] || project.thumbnail;
@@ -39,7 +39,7 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, onSelectPr
               className="cursor-pointer group w-full transition-all duration-200"
             >
               {/* White Rounded Project Card */}
-              <div className="bg-white rounded-2xl p-2.5 sm:p-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border border-slate-200/80 group-hover:border-[#00a8ff]/50 group-hover:shadow-[0_12px_28px_rgba(0,168,255,0.15)] transition-all overflow-hidden flex flex-col h-full">
+              <div className="bg-white rounded-2xl sm:rounded-3xl p-3 shadow-[0_8px_24px_rgba(0,0,0,0.07)] border border-slate-200/80 group-hover:border-[#00a8ff]/50 group-hover:shadow-[0_12px_28px_rgba(0,168,255,0.15)] transition-all overflow-hidden flex flex-col h-full">
                 
                 {/* Project Mockup / Screenshot Container */}
                 <div className="relative aspect-[16/10] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-slate-900/90 border border-slate-200/80 shadow-inner flex items-center justify-center p-1">
