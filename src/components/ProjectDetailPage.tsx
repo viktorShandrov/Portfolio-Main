@@ -11,10 +11,10 @@ import {
   Building2, 
   ChevronRight, 
   ChevronLeft,
-  Sparkles,
-  Send
+  Send,
+  Image as ImageIcon
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface ProjectDetailPageProps {
   project: Project;
@@ -31,16 +31,31 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
   onSelectProject,
   onOpenContact
 }) => {
-  const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  // Extract list of all image URLs (images[0] is main)
+  const imageList: string[] = project.images && project.images.length > 0
+    ? project.images
+    : project.gallery && project.gallery.length > 0
+      ? (project.gallery.map(g => g.image || project.thumbnail).filter(Boolean) as string[])
+      : [project.thumbnail];
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setActiveGalleryIndex(0);
+    setActiveImageIndex(0);
   }, [project]);
 
   const currentIndex = allProjects.findIndex(p => p.id === project.id);
   const prevProject = allProjects[(currentIndex - 1 + allProjects.length) % allProjects.length];
   const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
+
+  const handlePrevImage = () => {
+    setActiveImageIndex((prev) => (prev - 1 + imageList.length) % imageList.length);
+  };
+
+  const handleNextImage = () => {
+    setActiveImageIndex((prev) => (prev + 1) % imageList.length);
+  };
 
   return (
     <motion.div 
@@ -57,7 +72,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           whileHover={{ x: -3 }}
           whileTap={{ scale: 0.97 }}
           onClick={onBack}
-          className="flex items-center gap-2 text-[#0088cc] hover:text-[#005580] font-bold text-xs sm:text-sm px-3.5 py-2 rounded-xl hover:bg-slate-100 transition-colors group"
+          className="flex items-center gap-2 text-[#0088cc] hover:text-[#005580] font-bold text-xs sm:text-sm px-3.5 py-2 rounded-xl hover:bg-slate-100 transition-colors group cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
           <span>Назад към портфолиото</span>
@@ -112,7 +127,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 href={project.liveUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#00a8ff] hover:bg-[#0091ea] text-white font-bold text-xs sm:text-sm shadow-md transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#00a8ff] hover:bg-[#0091ea] text-white font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer"
               >
                 <span>Виж сайта на живо (Live Demo)</span>
                 <ExternalLink className="w-4 h-4" />
@@ -126,7 +141,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 href={project.githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs sm:text-sm border border-slate-300 transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs sm:text-sm border border-slate-300 transition-all cursor-pointer"
               >
                 <Github className="w-4 h-4" />
                 <span>GitHub Репозиторий</span>
@@ -135,43 +150,93 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           </div>
         </div>
 
-        {/* Screenshot / Gallery Hero View */}
-        <div className="mb-10 bg-slate-100 rounded-2xl p-3 sm:p-4 border border-slate-200 shadow-inner">
-          <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden shadow-md bg-white border border-slate-200">
-            {project.id === 'yana-karlovska' ? (
-              <img
-                src={project.gallery[activeGalleryIndex]?.image || project.thumbnail}
-                alt={project.title}
+        {/* ========================================================================= */}
+        {/* 📸 MAIN IMAGE VIEWER & CLICKABLE THUMBNAILS ROW */}
+        {/* ========================================================================= */}
+        <div className="mb-10 bg-slate-50 rounded-2xl p-3 sm:p-5 border border-slate-200 shadow-inner">
+          
+          {/* Main Display Container */}
+          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl overflow-hidden shadow-md bg-slate-900 border border-slate-200 group">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={activeImageIndex}
+                src={imageList[activeImageIndex]}
+                alt={`${project.title} - Снимка ${activeImageIndex + 1}`}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
                 className="w-full h-full object-cover object-top"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/assets/referral_design.png';
+                }}
               />
-            ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-cyan-950 text-white p-6 text-center">
-                <Sparkles className="w-10 h-10 text-cyan-400 mb-2" />
-                <h3 className="text-xl font-bold">{project.title}</h3>
-                <p className="text-xs text-slate-300 max-w-md mt-1">{project.shortDescription}</p>
-              </div>
+            </AnimatePresence>
+
+            {/* Prev / Next Image Navigation Overlay (if more than 1 image) */}
+            {imageList.length > 1 && (
+              <>
+                <button
+                  onClick={handlePrevImage}
+                  aria-label="Предишна снимка"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={handleNextImage}
+                  aria-label="Следваща снимка"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+
+                {/* Counter Badge */}
+                <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-md text-white font-mono text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1.5">
+                  <ImageIcon className="w-3.5 h-3.5 text-cyan-300" />
+                  <span>{activeImageIndex + 1} / {imageList.length}</span>
+                </div>
+              </>
             )}
           </div>
 
-          {/* Gallery Thumbnails / Tabs */}
-          {project.gallery && project.gallery.length > 1 && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
-              {project.gallery.map((item, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveGalleryIndex(idx)}
-                  className={`text-left p-2.5 rounded-xl border transition-all ${
-                    activeGalleryIndex === idx
-                      ? 'bg-white border-[#00a8ff] shadow-sm ring-1 ring-[#00a8ff]'
-                      : 'bg-white/60 border-slate-200 hover:bg-white text-slate-600'
-                  }`}
-                >
-                  <div className="font-bold text-xs text-slate-900 mb-0.5">{item.title}</div>
-                  <div className="text-[11px] text-slate-500 line-clamp-1">{item.description}</div>
-                </button>
-              ))}
+          {/* Small Thumbnails Row: Click to load on main container */}
+          {imageList.length > 1 && (
+            <div className="mt-4 pt-2 border-t border-slate-200">
+              <div className="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1">
+                <span>Галерия на проекта (кликнете за визуализация):</span>
+              </div>
+
+              <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin">
+                {imageList.map((imgUrl, idx) => (
+                  <motion.button
+                    key={idx}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`relative w-24 sm:w-28 aspect-[16/10] rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
+                      activeImageIndex === idx
+                        ? 'border-[#00a8ff] ring-3 ring-[#00a8ff]/40 shadow-md scale-[1.03]'
+                        : 'border-slate-200 opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`Миниатюра ${idx + 1}`}
+                      className="w-full h-full object-cover object-top"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = '/assets/referral_design.png';
+                      }}
+                    />
+                    {activeImageIndex === idx && (
+                      <div className="absolute inset-0 bg-[#00a8ff]/10 pointer-events-none" />
+                    )}
+                  </motion.button>
+                ))}
+              </div>
             </div>
           )}
+
         </div>
 
         {/* Content Section: Overview, Problem & Solution, Features */}
@@ -260,7 +325,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={onOpenContact}
-                className="w-full py-2.5 rounded-xl bg-white hover:bg-cyan-50 text-[#006494] font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                className="w-full py-2.5 rounded-xl bg-white hover:bg-cyan-50 text-[#006494] font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm cursor-pointer"
               >
                 <span>Започнете проект</span>
                 <Send className="w-3.5 h-3.5" />
@@ -276,7 +341,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           <motion.button
             whileHover={{ x: -4 }}
             onClick={() => onSelectProject(prevProject)}
-            className="flex items-center gap-2 text-left p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+            className="flex items-center gap-2 text-left p-2 rounded-xl hover:bg-slate-50 transition-colors group cursor-pointer"
           >
             <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 group-hover:bg-[#00a8ff] group-hover:text-white transition-colors">
               <ChevronLeft className="w-4 h-4" />
@@ -292,7 +357,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
           <motion.button
             whileHover={{ x: 4 }}
             onClick={() => onSelectProject(nextProject)}
-            className="flex items-center gap-2 text-right p-2 rounded-xl hover:bg-slate-50 transition-colors group"
+            className="flex items-center gap-2 text-right p-2 rounded-xl hover:bg-slate-50 transition-colors group cursor-pointer"
           >
             <div>
               <span className="text-[10px] text-slate-400 block font-semibold uppercase">Следващ</span>

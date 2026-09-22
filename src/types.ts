@@ -4,6 +4,7 @@ export interface Project {
   subtitle: string;
   category: string;
   thumbnail: string;
+  images?: string[]; // Списък с директни линкове към снимки. Първата снимка images[0] е главна!
   client: string;
   year: string;
   role: string;
@@ -15,7 +16,7 @@ export interface Project {
   techStack: string[];
   liveUrl?: string;
   githubUrl?: string;
-  gallery: {
+  gallery?: {
     title: string;
     description: string;
     image?: string;
