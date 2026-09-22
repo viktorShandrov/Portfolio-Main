@@ -59,7 +59,7 @@ export const HeroIntroSection: React.FC = () => {
 
           {/* Quote Bubble */}
           <div className="bg-[#9fe3fc] text-[#005273] font-bold text-sm sm:text-base lg:text-lg px-6 py-2.5 rounded-2xl shadow-sm border border-[#7ed6f8]">
-            <span>“Its impossible until its done”</span>
+            <span>“It always seems impossible until it's done.”</span>
           </div>
 
           {/* Bottom-Right Yellow Quote */}
