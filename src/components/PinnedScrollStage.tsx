@@ -84,6 +84,8 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
     });
   };
 
+  const isIntro = activeSection === 'intro';
+
   return (
     /* 420vh scroll container that drives the in-place crossfade across all 4 stages */
     <div ref={containerRef} className="relative w-full h-[420vh]">
@@ -101,7 +103,13 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
         <div className="w-full h-full pl-36 sm:pl-44 lg:pl-48 pr-0 flex items-center justify-between relative">
           
           {/* Middle Content Stage (In-Place Crossfading: Intro -> Projects -> Prices -> Testimonials) */}
-          <div className="w-full lg:w-[60%] xl:w-[56%] h-full flex flex-col justify-between py-6 sm:py-8 px-4 sm:px-8 z-10">
+          <div
+            className={`h-full flex flex-col justify-between py-5 sm:py-7 px-4 sm:px-6 lg:px-8 z-10 transition-all duration-500 ease-out ${
+              isIntro
+                ? 'w-full lg:w-[58%] xl:w-[54%]'
+                : 'w-full lg:w-[70%] xl:w-[66%]'
+            }`}
+          >
             
             {/* Central Stage where all 4 sections transition smoothly in the exact same place */}
             <div className="relative w-full flex-1 flex items-center justify-center my-auto min-h-[420px] sm:min-h-[480px]">
@@ -113,7 +121,7 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
                   scale: scaleIntro,
                   pointerEvents: activeSection === 'intro' ? 'auto' : 'none',
                 }}
-                className="absolute inset-0 flex items-center justify-center w-full"
+                className="absolute inset-0 flex items-center justify-start w-full"
               >
                 <div className="w-full">
                   <HeroIntroSection />
@@ -189,9 +197,15 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
 
           </div>
 
-          {/* Right Column: Fixed Sticky Viktor Portrait & 3D Arrows */}
-          <div className="hidden lg:flex lg:w-[40%] xl:w-[44%] h-full items-end justify-end relative z-20 pointer-events-none">
-            <ViktorStickyVisual />
+          {/* Right Column: Fixed Sticky Viktor Portrait & Pop-Out 3D Arrows */}
+          <div
+            className={`hidden lg:flex h-full items-end justify-end relative z-20 pointer-events-none transition-all duration-500 ease-out ${
+              isIntro
+                ? 'lg:w-[42%] xl:w-[46%]'
+                : 'lg:w-[30%] xl:w-[34%]'
+            }`}
+          >
+            <ViktorStickyVisual showArrows={isIntro} />
           </div>
 
         </div>
