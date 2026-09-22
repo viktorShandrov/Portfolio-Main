@@ -37,8 +37,8 @@ export const LeftSidebarMenu: React.FC<LeftSidebarMenuProps> = ({
       {/* Vertical Track of Menu Cards */}
       <div className="relative w-full flex flex-col items-center justify-center space-y-6 sm:space-y-8 py-8">
         {MENU_ITEMS.map((item, index) => {
-          // Distance from active item (-1, 0, 1, etc.)
-          const distance = index - activeIndex;
+          const isIntro = activeSection === 'intro';
+          const distance = activeIndex >= 0 ? index - activeIndex : 0;
           const isActive = item.id === activeSection;
 
           return (
@@ -46,11 +46,11 @@ export const LeftSidebarMenu: React.FC<LeftSidebarMenuProps> = ({
               key={item.id}
               onClick={() => onNavigateSection(`${item.id}-section`)}
               animate={{
-                scale: isActive ? 1.05 : 0.88,
-                opacity: isActive ? 1 : 0.45,
-                y: distance * 6,
+                scale: isActive ? 1.05 : 0.9,
+                opacity: isActive ? 1 : isIntro ? 0.75 : 0.45,
+                y: isIntro ? 0 : distance * 6,
               }}
-              whileHover={{ scale: isActive ? 1.08 : 0.95, opacity: 0.9 }}
+              whileHover={{ scale: isActive ? 1.08 : 0.98, opacity: 1 }}
               whileTap={{ scale: 0.92 }}
               transition={{ type: 'spring', stiffness: 350, damping: 28 }}
               className={`flex flex-col items-center cursor-pointer group relative transition-all duration-300 ${

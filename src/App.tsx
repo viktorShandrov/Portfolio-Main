@@ -8,7 +8,7 @@ import { AnimatePresence } from 'framer-motion';
 
 export const App: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeSection, setActiveSection] = useState<string>('projects');
+  const [activeSection, setActiveSection] = useState<string>('intro');
   const [isContactOpen, setIsContactOpen] = useState(false);
 
   // Sync with URL hash for direct project routing
