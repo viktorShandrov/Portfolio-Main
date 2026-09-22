@@ -43,3 +43,14 @@ export interface Testimonial {
   rating: number;
   avatar?: string;
 }
+
+export interface Certificate {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  grade: string;
+  image: string;
+  verifyUrl: string;
+  skills: string[];
+}

@@ -5,12 +5,14 @@ import { HeroIntroSection } from './HeroIntroSection';
 import { ViktorStickyVisual } from './ViktorStickyVisual';
 import { ProjectsGrid } from './ProjectsGrid';
 import { PricingSection } from './PricingSection';
+import { CertificatesSection } from './CertificatesSection';
 import { TestimonialsSection } from './TestimonialsSection';
-import { Project, PricingPlan, Testimonial } from '../types';
+import { Project, PricingPlan, Testimonial, Certificate } from '../types';
 
 interface PinnedScrollStageProps {
   projects: Project[];
   plans: PricingPlan[];
+  certificates: Certificate[];
   testimonials: Testimonial[];
   activeSection: string;
   setActiveSection: (section: string) => void;
@@ -21,6 +23,7 @@ interface PinnedScrollStageProps {
 export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
   projects,
   plans,
+  certificates,
   testimonials,
   activeSection,
   setActiveSection,
@@ -29,36 +32,42 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll progress through the 4-stage container (Intro -> Projects -> Prices -> Testimonials)
+  // Track scroll progress through the 5-stage container (Intro -> Projects -> Prices -> Certificates -> Testimonials)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  // 1. Stage 0: Intro (Name & Quote) - Visible at top, fades out
-  const opacityIntro = useTransform(scrollYProgress, [0, 0.16, 0.26], [1, 1, 0]);
-  const scaleIntro = useTransform(scrollYProgress, [0, 0.16, 0.26], [1, 1, 0.94]);
+  // 1. Stage 0: Intro (Name & Quote)
+  const opacityIntro = useTransform(scrollYProgress, [0, 0.12, 0.20], [1, 1, 0]);
+  const scaleIntro = useTransform(scrollYProgress, [0, 0.12, 0.20], [1, 1, 0.94]);
 
-  // 2. Stage 1: Projects - Fades in, stays visible, fades out
-  const opacityProjects = useTransform(scrollYProgress, [0.22, 0.30, 0.44, 0.52], [0, 1, 1, 0]);
-  const scaleProjects = useTransform(scrollYProgress, [0.22, 0.30, 0.44, 0.52], [0.95, 1, 1, 0.95]);
+  // 2. Stage 1: Projects
+  const opacityProjects = useTransform(scrollYProgress, [0.16, 0.24, 0.36, 0.44], [0, 1, 1, 0]);
+  const scaleProjects = useTransform(scrollYProgress, [0.16, 0.24, 0.36, 0.44], [0.95, 1, 1, 0.95]);
 
-  // 3. Stage 2: Prices - Fades in, stays visible, fades out
-  const opacityPrices = useTransform(scrollYProgress, [0.48, 0.56, 0.70, 0.78], [0, 1, 1, 0]);
-  const scalePrices = useTransform(scrollYProgress, [0.48, 0.56, 0.70, 0.78], [0.95, 1, 1, 0.95]);
+  // 3. Stage 2: Prices
+  const opacityPrices = useTransform(scrollYProgress, [0.40, 0.48, 0.58, 0.66], [0, 1, 1, 0]);
+  const scalePrices = useTransform(scrollYProgress, [0.40, 0.48, 0.58, 0.66], [0.95, 1, 1, 0.95]);
 
-  // 4. Stage 3: Testimonials - Fades in, stays visible to the end
-  const opacityTestimonials = useTransform(scrollYProgress, [0.74, 0.82, 1], [0, 1, 1]);
-  const scaleTestimonials = useTransform(scrollYProgress, [0.74, 0.82, 1], [0.95, 1, 1]);
+  // 4. Stage 3: Certificates
+  const opacityCertificates = useTransform(scrollYProgress, [0.62, 0.70, 0.80, 0.88], [0, 1, 1, 0]);
+  const scaleCertificates = useTransform(scrollYProgress, [0.62, 0.70, 0.80, 0.88], [0.95, 1, 1, 0.95]);
+
+  // 5. Stage 4: Testimonials
+  const opacityTestimonials = useTransform(scrollYProgress, [0.84, 0.91, 1], [0, 1, 1]);
+  const scaleTestimonials = useTransform(scrollYProgress, [0.84, 0.91, 1], [0.95, 1, 1]);
 
   // Synchronize the active section for sidebar menu indicator
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    if (latest < 0.24) {
+    if (latest < 0.20) {
       if (activeSection !== 'intro') setActiveSection('intro');
-    } else if (latest < 0.50) {
+    } else if (latest < 0.44) {
       if (activeSection !== 'projects') setActiveSection('projects');
-    } else if (latest < 0.76) {
+    } else if (latest < 0.66) {
       if (activeSection !== 'prices') setActiveSection('prices');
+    } else if (latest < 0.88) {
+      if (activeSection !== 'certificates') setActiveSection('certificates');
     } else {
       if (activeSection !== 'testimonials') setActiveSection('testimonials');
     }
@@ -69,13 +78,15 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
     const containerTop = containerRef.current.offsetTop;
     const totalScroll = containerRef.current.offsetHeight - window.innerHeight;
 
-    let targetRatio = 0.36;
+    let targetRatio = 0.30;
     if (sectionId.includes('prices')) {
-      targetRatio = 0.63;
+      targetRatio = 0.53;
+    } else if (sectionId.includes('certificates')) {
+      targetRatio = 0.75;
     } else if (sectionId.includes('testimonials')) {
-      targetRatio = 0.90;
+      targetRatio = 0.96;
     } else {
-      targetRatio = 0.36;
+      targetRatio = 0.30;
     }
 
     window.scrollTo({
@@ -87,13 +98,13 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
   const isIntro = activeSection === 'intro';
 
   return (
-    /* 420vh scroll container that drives the in-place crossfade across all 4 stages */
-    <div ref={containerRef} className="relative w-full h-[420vh]">
+    /* 520vh scroll container that drives the in-place crossfade across all 5 stages */
+    <div ref={containerRef} className="relative w-full h-[520vh]">
       
       {/* 100vh Sticky Viewport: Everything stays fixed on screen while content fades in place! */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between select-none bg-white">
         
-        {/* Left Vertical Docked Sidebar (Contains ONLY Projects, Prices, Testimonials) */}
+        {/* Left Vertical Docked Sidebar (Projects, Prices, Certificates, Testimonials) */}
         <LeftSidebarMenu
           activeSection={activeSection}
           onNavigateSection={handleNavigateSection}
@@ -102,7 +113,7 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
         {/* Main Stage Grid (Between Sidebar and Right Visual) */}
         <div className="w-full h-full pl-36 sm:pl-44 lg:pl-48 pr-0 flex items-center justify-between relative">
           
-          {/* Middle Content Stage (In-Place Crossfading: Intro -> Projects -> Prices -> Testimonials) */}
+          {/* Middle Content Stage */}
           <div
             className={`h-full flex flex-col justify-between py-5 sm:py-7 px-4 sm:px-6 lg:px-8 z-10 transition-all duration-500 ease-out ${
               isIntro
@@ -111,10 +122,10 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
             }`}
           >
             
-            {/* Central Stage where all 4 sections transition smoothly in the exact same place */}
+            {/* Central Stage where all 5 sections transition smoothly in the exact same place */}
             <div className="relative w-full flex-1 flex items-center justify-center my-auto min-h-[420px] sm:min-h-[480px]">
               
-              {/* Stage 0: Hero Intro (Name, Megaphone, Quote, Binary) */}
+              {/* Stage 0: Hero Intro */}
               <motion.div
                 style={{
                   opacity: opacityIntro,
@@ -145,7 +156,7 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
                 </div>
               </motion.div>
 
-              {/* Stage 2: Prices & Packages */}
+              {/* Stage 2: Prices */}
               <motion.div
                 style={{
                   opacity: opacityPrices,
@@ -162,7 +173,23 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
                 </div>
               </motion.div>
 
-              {/* Stage 3: Testimonials & Reviews */}
+              {/* Stage 3: Certificates */}
+              <motion.div
+                style={{
+                  opacity: opacityCertificates,
+                  scale: scaleCertificates,
+                  pointerEvents: activeSection === 'certificates' ? 'auto' : 'none',
+                }}
+                className="absolute inset-0 flex items-center justify-center w-full"
+              >
+                <div className="w-full">
+                  <CertificatesSection
+                    certificates={certificates}
+                  />
+                </div>
+              </motion.div>
+
+              {/* Stage 4: Testimonials */}
               <motion.div
                 style={{
                   opacity: opacityTestimonials,
@@ -185,9 +212,10 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
             <div className="shrink-0 pt-2 flex items-center justify-between text-[11px] text-slate-400 font-mono">
               <span className="font-bold text-cyan-700 uppercase">
                 {activeSection === 'intro' && 'НАЧАЛО • ВИКТОР ШАНДРОВ'}
-                {activeSection === 'projects' && '1 / 3 • ПРОЕКТИ'}
-                {activeSection === 'prices' && '2 / 3 • ЦЕНИ И ПАКЕТИ'}
-                {activeSection === 'testimonials' && '3 / 3 • ОТЗИВИ'}
+                {activeSection === 'projects' && '1 / 4 • ПРОЕКТИ'}
+                {activeSection === 'prices' && '2 / 4 • ЦЕНИ И ПАКЕТИ'}
+                {activeSection === 'certificates' && '3 / 4 • СЕРТИФИКАТИ'}
+                {activeSection === 'testimonials' && '4 / 4 • ОТЗИВИ'}
               </span>
               <span className="text-slate-400 flex items-center gap-1.5">
                 <span>Скролвайте за следваща секция</span>

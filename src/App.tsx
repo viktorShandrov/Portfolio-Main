@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PinnedScrollStage } from './components/PinnedScrollStage';
 import { ProjectDetailPage } from './components/ProjectDetailPage';
 import { ContactModal } from './components/ContactModal';
-import { projectsData, pricingPlans, testimonialsData } from './data/portfolioData';
+import { projectsData, pricingPlans, testimonialsData, certificatesData } from './data/portfolioData';
 import { Project } from './types';
 import { AnimatePresence } from 'framer-motion';
 
@@ -19,7 +19,7 @@ export const App: React.FC = () => {
         setSelectedProject(null);
         return;
       }
-      if (['projects-section', 'prices-section', 'testimonials-section'].includes(hash)) {
+      if (['projects-section', 'prices-section', 'certificates-section', 'testimonials-section'].includes(hash)) {
         setSelectedProject(null);
         setActiveSection(hash.replace('-section', ''));
         return;
@@ -68,6 +68,7 @@ export const App: React.FC = () => {
             <PinnedScrollStage
               projects={projectsData}
               plans={pricingPlans}
+              certificates={certificatesData}
               testimonials={testimonialsData}
               activeSection={activeSection}
               setActiveSection={setActiveSection}

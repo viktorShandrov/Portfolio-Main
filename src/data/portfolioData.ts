@@ -1,4 +1,4 @@
-import { Project, PricingPlan, Testimonial } from '../types';
+import { Project, PricingPlan, Testimonial, Certificate } from '../types';
 
 /**
  * =========================================================================================
@@ -287,3 +287,47 @@ export const testimonialsData: Testimonial[] = [
     rating: 5
   }
 ];
+
+export const certificatesData: Certificate[] = [
+  {
+    id: 'js-advanced',
+    title: 'JS Advanced',
+    issuer: 'Software University',
+    date: 'Януари 2023',
+    grade: '6.00 / 6.00',
+    image: '/assets/certificates/cert-js-advanced.jpg',
+    verifyUrl: 'https://softuni.bg/Certificates/Details/160208/e914f244',
+    skills: ['JavaScript ES6+', 'DOM & Events', 'Unit Testing', 'Classes & Prototypes']
+  },
+  {
+    id: 'js-backend',
+    title: 'JS Back-End',
+    issuer: 'Software University',
+    date: 'Май 2023',
+    grade: '6.00 / 6.00',
+    image: '/assets/certificates/cert-js-backend.jpg',
+    verifyUrl: 'https://softuni.bg/Certificates/Details/175231/4de14651',
+    skills: ['Node.js', 'Express.js', 'REST APIs', 'MongoDB / Mongoose', 'Auth & JWT']
+  },
+  {
+    id: 'angular',
+    title: 'Angular',
+    issuer: 'Software University',
+    date: 'Юни 2023',
+    grade: '6.00 / 6.00',
+    image: '/assets/certificates/cert-angular.jpg',
+    verifyUrl: 'https://softuni.bg/Certificates/Details/182995/187c2304',
+    skills: ['Angular', 'TypeScript', 'RxJS', 'State Management', 'Components & Routing']
+  },
+  {
+    id: 'html-css',
+    title: 'HTML & CSS',
+    issuer: 'Software University',
+    date: 'Септември 2023',
+    grade: '6.00 / 6.00',
+    image: '/assets/certificates/cert-html-css.jpg',
+    verifyUrl: 'https://softuni.bg/Certificates/Details/190872/6c6b321e',
+    skills: ['Semantic HTML5', 'Modern CSS3', 'Flexbox & Grid', 'Responsive Web Design']
+  }
+];
+
