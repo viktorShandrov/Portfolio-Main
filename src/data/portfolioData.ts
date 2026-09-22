@@ -27,9 +27,9 @@ export const projectsData: Project[] = [
       'https://i.ibb.co/qY5nY1TC/Screenshot-2026-09-23-005121.png',
       'https://i.ibb.co/CKX9Hhsd/Screenshot-2026-09-23-005058.png',
       'https://i.ibb.co/KxBD6d86/Screenshot-2026-09-23-005043.png',
-      'https://i.ibb.co/3ymYTd44/Screenshot-2026-09-23-005020.png',        // 3-та снимка
+      'https://i.ibb.co/3ymYTd44/Screenshot-2026-09-23-005020.png',
     ],
-    thumbnail: '/assets/yana_website.png',
+    thumbnail: 'https://i.ibb.co/V0FyVc45/Screenshot-2026-09-23-004823.png',
 
     client: 'Яна Кърнолска (Психолог & Психотерапевт)',
     year: '2024',
@@ -53,87 +53,107 @@ export const projectsData: Project[] = [
       {
         title: 'Начален екран (Hero Section)',
         description: 'Топло представяне с акцент върху доверието, спокойствието и личния контакт.',
-        image: '/assets/yana_website.png'
+        image: 'https://i.ibb.co/V0FyVc45/Screenshot-2026-09-23-004823.png'
       },
       {
         title: 'Модул за запазване на час (Booking Modal)',
         description: 'Интерактивен избор на услуга, дата и час с моментални Telegram известия.',
-        image: '/assets/yana_website.png'
+        image: 'https://i.ibb.co/Qj9dzM2P/Screenshot-2026-09-23-005156.png'
+      }
+    ]
+  },
+  {
+    id: 'gratsiela-art',
+    title: 'Gratsiela Art — Онлайн Галерия & E-Commerce',
+    subtitle: 'Платформа за авторско изкуство, картини и дигитални продукти',
+    category: 'Full-Stack E-Commerce & Галерия',
+    
+    // 📸 СПИСЪК С ЛИНКОВЕ КЪМ СНИМКИТЕ:
+    images: [
+      'https://i.ibb.co/Xf1b9z2g/Screenshot-2026-09-23-005646.png',           // 1-ва (Главна снимка / Корица)
+      'https://i.ibb.co/mCnZ6hV0/Screenshot-1.png',
+      'https://i.ibb.co/4nJbkk9B/Screenshot-2026-09-23-005827.png',
+      'https://i.ibb.co/N2PKRbRX/Screenshot-2026-09-23-005806.png',
+      'https://i.ibb.co/rfTjt848/Screenshot-2026-09-23-005738.png',
+      'https://i.ibb.co/hRrkTL0Y/Screenshot-2026-09-23-005711.png',
+    ],
+    thumbnail: 'https://i.ibb.co/Xf1b9z2g/Screenshot-2026-09-23-005646.png',
+
+    client: 'Грациела Иванова (Художник & Творец)',
+    year: '2024',
+    role: 'Full-Stack Developer & UI/UX Архитект',
+    shortDescription: 'Премиум уеб платформа и онлайн магазин за авторско изкуство със Stripe Checkout, защитени дигитални сваляния, двуезичност (BG/EN) и Dashboard.',
+    fullDescription: 'Цялостна уеб платформа и електронен магазин за представяне и продажба на оригинални картини, лимитирани арт принтове и дигитални арт ръководства за художника Грациела Иванова. Проектът съчетава луксозна естетика (тъмен режим с акценти от шампанско и злато) със стабилна бекенд архитектура за автоматизирани плащания и сигурно стриймване на дигитално съдържание.',
+    problem: 'Нужда от независим контрол върху представянето и директните продажби на творбите без платформени такси, комисионни или тромави готови CMS системи (като WordPress/WooCommerce).',
+    solution: 'Разработен е къстъм Full-Stack софтуер с Express.js бекенд, Stripe Checkout & Webhook интеграция за надеждни трансакции, адаптивен слой за база данни (PostgreSQL / JSON), защитени еднократни линкове за дигитални сваляния и цялостен Dashboard за управление.',
+    features: [
+      'Хибриден e-commerce каталог за оригинални картини, принтове и дигитални продукти',
+      'Автоматизирани онлайн плащания със Stripe Checkout и асинхронен Webhook слушател',
+      'Защитено стриймване и еднократни линкове за сваляне на дигитални арт продукти',
+      'Цялостен администраторски панел (Dashboard) за CRUD управление на творби и поръчки',
+      'Автоматични трансакционни имейли за потвърждение чрез Nodemailer',
+      'Двуезичен интерфейс (Български / Английски) и SEO оптимизация с OpenGraph'
+    ],
+    techStack: ['Node.js', 'Express.js', 'PostgreSQL', 'Stripe API', 'Nodemailer', 'JavaScript ES6+', 'HTML5', 'CSS3'],
+    liveUrl: 'https://gratsiela.art',
+    githubUrl: 'https://github.com/viktorShandrov/Gratsiela',
+    gallery: [
+      {
+        title: 'Главна галерия и каталог',
+        description: 'Премиум тъмна визия с акцент върху детайла и текстурите на авторските картини.',
+        image: 'https://i.ibb.co/Xf1b9z2g/Screenshot-2026-09-23-005646.png'
       },
       {
-        title: 'Терапевтични услуги и блог статии',
-        description: 'Подробна информация за индивидуални консултации, терапия за двойки и полезни публикации.',
-        image: '/assets/yana_website.png'
+        title: 'Администраторски панел (Dashboard)',
+        description: 'Защитено управление на продукти, клиентски поръчки и промо кодове.',
+        image: 'https://i.ibb.co/mCnZ6hV0/Screenshot-1.png'
       }
     ]
   },
   {
-    id: 'traffic-flow',
-    title: 'TrafficFlow Telematics',
-    subtitle: 'Интелигентна система за наблюдение на градския трафик',
-    category: 'Телематика & Dashboards',
+    id: 'align-us',
+    title: 'AlignUs — Group Meeting Scheduler',
+    subtitle: 'Платформа за координиране на срещи и наличности в реално време',
+    category: 'SaaS Платформа & Full-Stack App',
     
     // 📸 СПИСЪК С ЛИНКОВЕ КЪМ СНИМКИТЕ:
     images: [
-      '/assets/referral_design.png',           // 1-ва (Главна снимка / Корица)
-      '/assets/yana_website.png',              // 2-ра снимка
+      'https://i.ibb.co/9kDdFCYs/Screenshot-2.png',               // 1-ва (Главна снимка / Корица)
+      'https://i.ibb.co/gZLp8f3S/Screenshot-3.png',
+      'https://i.ibb.co/1jGb1rH/Screenshot-4.png',
+      // 'https://i.ibb.co/YBfGbkbw/Screenshot-5.png',
+      'https://i.ibb.co/21H9H41H/Screenshot-6.png',
     ],
-    thumbnail: '/assets/referral_design.png',
+    thumbnail: 'https://i.ibb.co/9kDdFCYs/Screenshot-2.png',
 
-    client: 'Smart City Mobility',
+    client: 'AlignUs Productivity',
     year: '2024',
-    role: 'Lead UI/UX & Frontend Engineer',
-    shortDescription: 'Платформа за визуализация на трафик данни в реално време със сензори и топлинни карти.',
-    fullDescription: 'Специализирано контролно табло за мониторинг на пътния трафик и автоматично регулиране на светофарни уредби в реално време.',
-    problem: 'Висока натовареност на градските артерии и бавна реакция при задръствания.',
-    solution: 'Разработка на бърз WebGL/Canvas интерфейс с живи потоци от данни и предиктивен анализ.',
+    role: 'Full-Stack Architect & Lead Engineer',
+    shortDescription: 'Високопроизводително SaaS приложение за планиране на групови срещи с интерактивни топлинни карти (heatmaps), AI алгоритъм за препоръка на слотове и синхронизация в реално време.',
+    fullDescription: 'AlignUs е модерно SaaS уеб приложение, проектирано да елиминира безкрайната комуникация и часовите несъответствия при организиране на срещи между екипи. Платформата предоставя визуален drag-and-drop календар за наличности, автоматично изчисляване на топлинни карти на съвпаденията (Heatmap), интелигентен алгоритъм за препоръка на най-добрите интервали, 1-click експорт към Google/Outlook календари и вграден аналитичен Dashboard в реално време.',
+    problem: 'Тромава координация при насрочване на срещи в големи екипи, водеща до десетки съобщения в чата, объркани часови зони и изгубено време.',
+    solution: 'Разработка на бърз интерактивен интерфейс с Optimistic UI и Drizzle ORM / Serverless PostgreSQL бекенд, който визуализира общата наличност като топлинна карта и автоматично препоръчва оптималните часови интервали.',
     features: [
-      'Анализ на над 40,000 превозни средства едновременно',
-      'Интерактивна топлинна карта на натовареността',
-      'Автоматично засичане на инциденти под 1.5 секунди'
+      'Интерактивен Drag & Drop календар за избор на свободни часови слотове с 30-минутна прецизност',
+      'Динамична топлинна карта (Heatmap) за моментална визуализация на груповата наличност',
+      'Smart Match алгоритъм (findBestSlotWindows) за автоматична препоръка на най-добрите интервали',
+      'Защита на самоличността на участниците чрез Persistent Device UUID без нужда от регистрация',
+      'Оптимистичен UI и фонова синхронизация с база данни в реално време',
+      'Вграден аналитичен Dashboard за проследяване на ангажираността и ключови KPI метрики'
     ],
-    techStack: ['React', 'TypeScript', 'Tailwind CSS', 'WebSockets', 'Chart.js', 'Mapbox GL'],
-    liveUrl: 'https://traffic.shandrov.dev',
-    githubUrl: 'https://github.com/viktorshandrov/traffic-telematics',
+    techStack: ['React 18', 'TypeScript', 'Tailwind CSS', 'Vite', 'Drizzle ORM', 'PostgreSQL', 'Framer Motion', 'Lucide Icons'],
+    liveUrl: 'https://alignus.app',
+    githubUrl: 'https://github.com/viktorShandrov/AlignUs',
     gallery: [
       {
-        title: 'Главен контролен панел',
-        description: 'Обобщени метрики за скорост, камери и засичане на задръствания.'
-      }
-    ]
-  },
-  {
-    id: 'nordic-ecommerce',
-    title: 'Aura Living — Е-Магазин',
-    subtitle: 'Минималистичен онлайн магазин за интериорен дизайн',
-    category: 'Електронна Търговия',
-    
-    // 📸 СПИСЪК С ЛИНКОВЕ КЪМ СНИМКИТЕ:
-    images: [
-      '/assets/referral_design.png',           // 1-ва (Главна снимка / Корица)
-      '/assets/yana_website.png',              // 2-ра снимка
-    ],
-    thumbnail: '/assets/referral_design.png',
-
-    client: 'Aura Design Studio',
-    year: '2023',
-    role: 'UI Designer & Full Stack Developer',
-    shortDescription: 'Премиум онлайн магазин с 3D визуализация на мебели и 1-step checkout.',
-    fullDescription: 'Модерно преживяване за онлайн пазаруване с висока степен на естетика, анимации при скрол и интеграция на сигурни плащания.',
-    problem: 'Тромави платформи с бавно зареждане на изображения и ниска конверсия при поръчка.',
-    solution: 'Headless React архитектура с моментално зареждане и интерактивен преглед на продуктите.',
-    features: [
-      '3D преглед на мебели в пространството',
-      'Експресно плащане с Apple Pay, Google Pay и карти',
-      'Филтриране на продукти без презареждане на страницата'
-    ],
-    techStack: ['React', 'Next.js', 'Tailwind CSS', 'Stripe', 'Three.js', 'Figma'],
-    liveUrl: 'https://aura-living.shandrov.dev',
-    githubUrl: 'https://github.com/viktorshandrov/aura-ecommerce',
-    gallery: [
+        title: 'Интерактивна топлинна карта (Heatmap)',
+        description: 'Визуализация на груповата наличност в реално време с препоръка на топ интервали.',
+        image: 'https://i.ibb.co/9kDdFCYs/Screenshot-2.png'
+      },
       {
-        title: 'Продуктов каталог',
-        description: 'Елегантна решетка с филтри и плавни анимации.'
+        title: 'Аналитичен Dashboard за активност',
+        description: 'Проследяване на сесии, запазени наличности и ключови метрики в реално време.',
+        image: 'https://i.ibb.co/gZLp8f3S/Screenshot-3.png'
       }
     ]
   }
@@ -200,18 +220,18 @@ export const testimonialsData: Testimonial[] = [
   },
   {
     id: '2',
-    name: 'Димитър Георгиев',
-    role: 'Управител',
-    company: 'Nordic Living Bulgaria',
-    content: 'Изключително рядко се среща специалист, който разбира толкова добре както от естетичен дизайн, така и от техническа разработка. Онлайн магазинът ни увеличи продажбите с 40% още през първия месец.',
+    name: 'Грациела Иванова',
+    role: 'Художник & Визуален артист',
+    company: 'Gratsiela Art Studio',
+    content: 'Виктор изгради платформа, която представя картините ми по невероятно елегантен начин. Stripe плащанията и автоматичното изпращане на дигиталните файлове спестяват часове ръчна работа всеки ден. Истински професионализъм!',
     rating: 5
   },
   {
     id: '3',
-    name: 'Елена Василева',
-    role: 'Маркетинг Директор',
-    company: 'TechFlow Logistics',
-    content: 'Комуникацията с Виктор беше удоволствие. Спази абсолютно всички срокове, а изчистеният интерфейс и скоростта на платформата са безупречни.',
+    name: 'Мартин Димитров',
+    role: 'Product Lead',
+    company: 'SyncFlow Team',
+    content: 'AlignUs спестява часове на екипа ни всяка седмица при насрочване на срещи с клиенти и колеги от различни часови зони. Топлинната карта и моменталната синхронизация правят планирането истинско удоволствие!',
     rating: 5
   }
 ];

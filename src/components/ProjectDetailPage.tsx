@@ -155,8 +155,8 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
         {/* ========================================================================= */}
         <div className="mb-10 bg-slate-50 rounded-2xl p-3 sm:p-5 border border-slate-200 shadow-inner">
           
-          {/* Main Display Container */}
-          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-xl overflow-hidden shadow-md bg-slate-900 border border-slate-200 group">
+          {/* Main Display Container - Displays image in 100% full view without cropping */}
+          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] min-h-[320px] sm:min-h-[450px] lg:min-h-[520px] rounded-xl overflow-hidden shadow-md bg-slate-900/95 border border-slate-800 flex items-center justify-center p-2 sm:p-4 group">
             <AnimatePresence mode="wait">
               <motion.img
                 key={activeImageIndex}
@@ -165,8 +165,8 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="w-full h-full object-cover object-top"
+                transition={{ duration: 0.25 }}
+                className="max-w-full max-h-full w-auto h-auto object-contain object-center rounded-lg drop-shadow-xl"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = '/assets/referral_design.png';
                 }}
@@ -179,20 +179,20 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                 <button
                   onClick={handlePrevImage}
                   aria-label="Предишна снимка"
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-xl border border-white/20"
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={handleNextImage}
                   aria-label="Следваща снимка"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-xl border border-white/20"
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
 
                 {/* Counter Badge */}
-                <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-md text-white font-mono text-xs px-3 py-1 rounded-full shadow-md flex items-center gap-1.5">
+                <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-md text-white font-mono text-xs px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 border border-white/15">
                   <ImageIcon className="w-3.5 h-3.5 text-cyan-300" />
                   <span>{activeImageIndex + 1} / {imageList.length}</span>
                 </div>
@@ -202,7 +202,7 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
 
           {/* Small Thumbnails Row: Click to load on main container */}
           {imageList.length > 1 && (
-            <div className="mt-4 pt-2 border-t border-slate-200">
+            <div className="mt-4 pt-3 border-t border-slate-200">
               <div className="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1">
                 <span>Галерия на проекта (кликнете за визуализация):</span>
               </div>
@@ -214,16 +214,16 @@ export const ProjectDetailPage: React.FC<ProjectDetailPageProps> = ({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`relative w-24 sm:w-28 aspect-[16/10] rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
+                    className={`relative w-24 sm:w-28 aspect-[16/10] rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer bg-slate-800 flex items-center justify-center p-1 ${
                       activeImageIndex === idx
-                        ? 'border-[#00a8ff] ring-3 ring-[#00a8ff]/40 shadow-md scale-[1.03]'
-                        : 'border-slate-200 opacity-60 hover:opacity-100'
+                        ? 'border-[#00a8ff] ring-3 ring-[#00a8ff]/50 shadow-md scale-[1.03]'
+                        : 'border-slate-300 opacity-65 hover:opacity-100'
                     }`}
                   >
                     <img
                       src={imgUrl}
                       alt={`Миниатюра ${idx + 1}`}
-                      className="w-full h-full object-cover object-top"
+                      className="max-w-full max-h-full w-auto h-auto object-contain object-center rounded-sm"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = '/assets/referral_design.png';
                       }}

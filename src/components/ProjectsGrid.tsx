@@ -42,12 +42,12 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, onSelectPr
               <div className="bg-white rounded-2xl sm:rounded-3xl p-3 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border border-slate-200/80 group-hover:border-[#00a8ff]/50 group-hover:shadow-[0_12px_28px_rgba(0,168,255,0.15)] transition-all overflow-hidden flex flex-col">
                 
                 {/* Project Mockup / Screenshot Container */}
-                <div className="relative aspect-[16/10] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-slate-100 border border-slate-200/80 shadow-inner">
+                <div className="relative aspect-[16/10] w-full rounded-xl sm:rounded-2xl overflow-hidden bg-slate-900/90 border border-slate-200/80 shadow-inner flex items-center justify-center p-1">
                   {coverImage ? (
                     <img
                       src={coverImage}
                       alt={project.title}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      className="max-w-full max-h-full w-auto h-auto object-contain object-center group-hover:scale-105 transition-transform duration-300 rounded-sm"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = '/assets/referral_design.png';
                       }}
