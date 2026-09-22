@@ -1,0 +1,44 @@
+export interface Project {
+  id: string;
+  title: string;
+  subtitle: string;
+  category: string;
+  thumbnail: string;
+  client: string;
+  year: string;
+  role: string;
+  shortDescription: string;
+  fullDescription: string;
+  problem: string;
+  solution: string;
+  features: string[];
+  techStack: string[];
+  liveUrl?: string;
+  githubUrl?: string;
+  gallery: {
+    title: string;
+    description: string;
+    image?: string;
+  }[];
+}
+
+export interface PricingPlan {
+  id: string;
+  name: string;
+  price: string;
+  period?: string;
+  description: string;
+  popular?: boolean;
+  features: string[];
+  deliveryTime: string;
+}
+
+export interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  content: string;
+  rating: number;
+  avatar?: string;
+}
