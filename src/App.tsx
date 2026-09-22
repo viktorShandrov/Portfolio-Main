@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { HeaderHero } from './components/HeaderHero';
-import { ProjectsGrid } from './components/ProjectsGrid';
+import { PinnedScrollStage } from './components/PinnedScrollStage';
 import { ProjectDetailPage } from './components/ProjectDetailPage';
-import { PricingSection } from './components/PricingSection';
-import { TestimonialsSection } from './components/TestimonialsSection';
 import { ContactModal } from './components/ContactModal';
 import { projectsData, pricingPlans, testimonialsData } from './data/portfolioData';
 import { Project } from './types';
@@ -24,8 +21,7 @@ export const App: React.FC = () => {
       }
       if (['projects-section', 'prices-section', 'testimonials-section'].includes(hash)) {
         setSelectedProject(null);
-        const el = document.getElementById(hash);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        setActiveSection(hash.replace('-section', ''));
         return;
       }
       const project = projectsData.find(p => p.id === hash);
@@ -42,6 +38,7 @@ export const App: React.FC = () => {
   const handleSelectProject = (project: Project) => {
     setSelectedProject(project);
     window.location.hash = project.id;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackToPortfolio = () => {
@@ -49,36 +46,14 @@ export const App: React.FC = () => {
     window.history.pushState(null, '', window.location.pathname);
   };
 
-  const handleNavigateSection = (sectionId: string) => {
-    if (selectedProject) {
-      setSelectedProject(null);
-      setTimeout(() => {
-        const el = document.getElementById(sectionId);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } else {
-      const el = document.getElementById(sectionId);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }
-    setActiveSection(sectionId.replace('-section', ''));
-  };
-
   return (
-    <div className="min-h-screen bg-[#00a8ff] flex flex-col justify-between selection:bg-white selection:text-[#00a8ff] font-sans antialiased text-slate-900">
+    <div className="min-h-screen bg-white flex flex-col justify-between selection:bg-[#00a8ff] selection:text-white font-sans antialiased text-slate-900">
       
-      {/* Top Header Hero: Full-Width 100vw White Section (No blue borders on left/right) */}
-      <HeaderHero
-        onNavigateSection={handleNavigateSection}
-        activeSection={activeSection}
-        onOpenContact={() => setIsContactOpen(true)}
-      />
-
-      {/* Centered SPA Main Content Flow */}
-      <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
-        
-        <main className="w-full my-8 transition-all duration-300">
-          <AnimatePresence mode="wait">
-            {selectedProject ? (
+      {/* Main Content Area */}
+      <div className="w-full flex-1">
+        <AnimatePresence mode="wait">
+          {selectedProject ? (
+            <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-8">
               <ProjectDetailPage
                 key={`project-${selectedProject.id}`}
                 project={selectedProject}
@@ -87,53 +62,32 @@ export const App: React.FC = () => {
                 onSelectProject={handleSelectProject}
                 onOpenContact={() => setIsContactOpen(true)}
               />
-            ) : (
-              <div className="space-y-12 sm:space-y-16">
-                
-                {/* 1. Projects Section */}
-                <section id="projects-section" className="scroll-mt-6">
-                  <ProjectsGrid
-                    projects={projectsData}
-                    onSelectProject={handleSelectProject}
-                  />
-                </section>
+            </div>
+          ) : (
+            /* Pinned In-Place Crossfade Stage (No visible page scrolling, pure opacity 0/1 transitions in place) */
+            <PinnedScrollStage
+              projects={projectsData}
+              plans={pricingPlans}
+              testimonials={testimonialsData}
+              activeSection={activeSection}
+              setActiveSection={setActiveSection}
+              onSelectProject={handleSelectProject}
+              onOpenContact={() => setIsContactOpen(true)}
+            />
+          )}
+        </AnimatePresence>
+      </div>
 
-                {/* Divider Line */}
-                <div className="w-full max-w-2xl mx-auto h-px bg-white/25" />
-
-                {/* 2. Prices Section */}
-                <section id="prices-section" className="scroll-mt-6">
-                  <PricingSection
-                    plans={pricingPlans}
-                    onOpenContact={() => setIsContactOpen(true)}
-                  />
-                </section>
-
-                {/* Divider Line */}
-                <div className="w-full max-w-2xl mx-auto h-px bg-white/25" />
-
-                {/* 3. Testimonials Section */}
-                <section id="testimonials-section" className="scroll-mt-6">
-                  <TestimonialsSection
-                    testimonials={testimonialsData}
-                    onOpenContact={() => setIsContactOpen(true)}
-                  />
-                </section>
-
-              </div>
-            )}
-          </AnimatePresence>
-        </main>
-
-        {/* Centered Footer */}
-        <footer className="w-full mx-auto py-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between text-white/90 text-xs gap-3">
-          <div>
-            © {new Date().getFullYear()} <strong>Виктор Шандров</strong> — Уеб Дизайнер и Разработчик
+      {/* Footer */}
+      <footer className={`w-full bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-xs z-30 relative ${!selectedProject ? 'pl-36 sm:pl-44 lg:pl-48' : ''}`}>
+        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-center sm:text-left text-slate-300">
+            © {new Date().getFullYear()} <strong className="text-white">Виктор Шандров</strong> — Уеб Дизайнер и Разработчик
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 text-slate-300">
             <button
               onClick={() => setIsContactOpen(true)}
-              className="hover:text-white underline underline-offset-4"
+              className="hover:text-white underline underline-offset-4 cursor-pointer"
             >
               Контакти
             </button>
@@ -145,9 +99,8 @@ export const App: React.FC = () => {
               viktor@shandrov.dev
             </a>
           </div>
-        </footer>
-
-      </div>
+        </div>
+      </footer>
 
       {/* Contact Form Modal */}
       <ContactModal

@@ -24,10 +24,10 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ plans, onOpenCon
         transition={{ delay: 0.1, duration: 0.4 }}
         className="text-center mb-6 sm:mb-8"
       >
-        <h2 className="text-white font-black text-xl sm:text-2xl lg:text-3xl tracking-widest uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
+        <h2 className="text-[#0077b6] font-black text-xl sm:text-2xl lg:text-3xl tracking-widest uppercase drop-shadow-xs">
           PRICES & PACKAGES
         </h2>
-        <p className="text-cyan-100 text-xs sm:text-sm font-medium mt-1">
+        <p className="text-slate-600 text-xs sm:text-sm font-medium mt-1">
           Прозрачни цени за уеб дизайн и разработка без скрити такси
         </p>
       </motion.div>

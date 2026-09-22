@@ -24,10 +24,10 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testim
         transition={{ delay: 0.1, duration: 0.4 }}
         className="text-center mb-6 sm:mb-8"
       >
-        <h2 className="text-white font-black text-xl sm:text-2xl lg:text-3xl tracking-widest uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
+        <h2 className="text-[#0077b6] font-black text-xl sm:text-2xl lg:text-3xl tracking-widest uppercase drop-shadow-xs">
           TESTIMONIALS
         </h2>
-        <p className="text-cyan-100 text-xs sm:text-sm font-medium mt-1">
+        <p className="text-slate-600 text-xs sm:text-sm font-medium mt-1">
           Какво казват клиентите за съвместната ни работа
         </p>
       </motion.div>
@@ -76,17 +76,17 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({ testim
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.45, duration: 0.4 }}
-        className="mt-8 text-center bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 text-white flex flex-col sm:flex-row items-center justify-between gap-3"
+        className="mt-8 text-center bg-gradient-to-r from-[#006c99] to-[#0091ea] text-white rounded-3xl p-6 border border-white/20 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4"
       >
         <div className="text-left">
-          <h4 className="font-bold text-sm">Искате ли да сте следващата успешна история?</h4>
-          <p className="text-xs text-cyan-100">Нека превърнем вашата идея в реален функционален уебсайт.</p>
+          <h4 className="font-bold text-base text-white">Искате ли да сте следващата успешна история?</h4>
+          <p className="text-xs text-cyan-100 mt-0.5">Нека превърнем вашата идея в реален функционален уебсайт.</p>
         </div>
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={onOpenContact}
-          className="px-4 py-2 rounded-xl bg-white text-[#006494] font-bold text-xs hover:bg-cyan-50 transition-colors shadow-sm"
+          className="px-5 py-2.5 rounded-xl bg-white text-[#006c99] font-bold text-xs hover:bg-cyan-50 transition-colors shadow-sm cursor-pointer shrink-0"
         >
           Свържете се с мен
         </motion.button>

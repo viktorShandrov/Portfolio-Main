@@ -25,9 +25,12 @@ export const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects, onSelectPr
         transition={{ delay: 0.1, duration: 0.4 }}
         className="text-center mb-6 sm:mb-8"
       >
-        <h2 className="text-white font-black text-xl sm:text-2xl lg:text-3xl tracking-widest uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]">
+        <h2 className="text-[#0077b6] font-black text-xl sm:text-2xl lg:text-3xl tracking-widest uppercase drop-shadow-xs">
           PROJECTS
         </h2>
+        <p className="text-slate-600 text-xs sm:text-sm font-medium mt-1">
+          Подбрани реализирани проекти и клиентски платформи
+        </p>
       </motion.div>
 
       {/* Grid of Projects */}
