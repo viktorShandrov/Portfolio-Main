@@ -248,7 +248,7 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
                 : 'lg:w-[30%] xl:w-[34%]'
             }`}
           >
-            <ViktorStickyVisual showArrows={isIntro} />
+            <ViktorStickyVisual scrollYProgress={scrollYProgress} showArrows={isIntro} />
           </div>
 
         </div>

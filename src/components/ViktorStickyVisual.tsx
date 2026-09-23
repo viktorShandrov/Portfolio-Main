@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, MotionValue, useTransform, useMotionValue } from 'framer-motion';
 
 export const ARROWS_SETTINGS = {
   zIndex: {
@@ -21,50 +21,51 @@ export const ARROWS_SETTINGS = {
 
 interface ViktorStickyVisualProps {
   showArrows?: boolean;
+  scrollYProgress?: MotionValue<number>;
 }
 
 export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
-  showArrows = true,
+  scrollYProgress,
 }) => {
+  // Synchronize arrows/badges fade & scale with the hero intro scroll progression [0, 0.08, 0.14]
+  const fallbackScroll = useMotionValue(0);
+  const effectiveScroll = scrollYProgress || fallbackScroll;
+  const arrowsOpacity = useTransform(effectiveScroll, [0, 0.08, 0.14], [1, 1, 0]);
+  const arrowsScale = useTransform(effectiveScroll, [0, 0.08, 0.14], [1, 1, 0.94]);
+
   return (
     <div className="relative w-full h-full min-h-[500px] lg:h-screen flex items-end justify-end select-none overflow-visible">
       
-      {/* 3 Layered Overlapping Arrows & Floating Badges Container (With Pop-Out exit) */}
-      <AnimatePresence>
-        {showArrows && (
-          <motion.div
-            key="arrows-cluster"
-            initial={{
-              opacity: 0,
-              scale: 0.3,
-              x: 140,
-              y: 140,
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              x: 0,
-              y: 0,
-              transition: {
-                type: 'spring',
-                stiffness: 280,
-                damping: 24,
-              },
-            }}
-            exit={{
-              opacity: [1, 1, 0],
-              scale: [1, 1.12, 0.05],
-              x: [0, 20, 180],
-              y: [0, -10, 180],
-              transition: {
-                duration: 0.45,
-                times: [0, 0.25, 1],
-                ease: [0.32, 0, 0.67, 0],
-              },
-            }}
-            style={{ zIndex: ARROWS_SETTINGS.zIndex.arrowsContainer }}
-            className={`absolute ${ARROWS_SETTINGS.rightPosition} ${ARROWS_SETTINGS.bottomPosition} ${ARROWS_SETTINGS.scale} pointer-events-none w-[340px] sm:w-[440px] lg:w-[480px] xl:w-[540px] aspect-square flex items-end justify-end`}
-          >
+      {/* 3 Layered Overlapping Arrows & Floating Badges Container (Synchronized with Intro scroll) */}
+      <motion.div
+        style={{
+          opacity: arrowsOpacity,
+          scale: arrowsScale,
+          zIndex: ARROWS_SETTINGS.zIndex.arrowsContainer,
+        }}
+        className={`absolute ${ARROWS_SETTINGS.rightPosition} ${ARROWS_SETTINGS.bottomPosition} ${ARROWS_SETTINGS.scale} pointer-events-none w-[340px] sm:w-[440px] lg:w-[480px] xl:w-[540px] aspect-square flex items-end justify-end`}
+      >
+        <motion.div
+          key="arrows-cluster-inner"
+          initial={{
+            opacity: 0,
+            scale: 0.3,
+            x: 140,
+            y: 140,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            x: 0,
+            y: 0,
+            transition: {
+              type: 'spring',
+              stiffness: 280,
+              damping: 24,
+            },
+          }}
+          className="relative w-full h-full flex items-end justify-end"
+        >
             {/* Top-Left: Purple Badge with Pop-Up Entrance & Continuous Spin */}
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
@@ -177,8 +178,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
               </motion.div>
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </motion.div>
 
       {/* Viktor's Official Portrait (Bouncy Spring Pop-Up with Natural Overshoot) */}
       <motion.div
