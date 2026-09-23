@@ -39,34 +39,34 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
   });
 
   // 1. Stage 0: Intro (Name & Quote)
-  const opacityIntro = useTransform(scrollYProgress, [0, 0.12, 0.20], [1, 1, 0]);
-  const scaleIntro = useTransform(scrollYProgress, [0, 0.12, 0.20], [1, 1, 0.94]);
+  const opacityIntro = useTransform(scrollYProgress, [0, 0.08, 0.14], [1, 1, 0]);
+  const scaleIntro = useTransform(scrollYProgress, [0, 0.08, 0.14], [1, 1, 0.94]);
 
   // 2. Stage 1: Projects
-  const opacityProjects = useTransform(scrollYProgress, [0.16, 0.24, 0.36, 0.44], [0, 1, 1, 0]);
-  const scaleProjects = useTransform(scrollYProgress, [0.16, 0.24, 0.36, 0.44], [0.95, 1, 1, 0.95]);
+  const opacityProjects = useTransform(scrollYProgress, [0.12, 0.17, 0.27, 0.32], [0, 1, 1, 0]);
+  const scaleProjects = useTransform(scrollYProgress, [0.12, 0.17, 0.27, 0.32], [0.95, 1, 1, 0.95]);
 
   // 3. Stage 2: Prices
-  const opacityPrices = useTransform(scrollYProgress, [0.40, 0.48, 0.58, 0.66], [0, 1, 1, 0]);
-  const scalePrices = useTransform(scrollYProgress, [0.40, 0.48, 0.58, 0.66], [0.95, 1, 1, 0.95]);
+  const opacityPrices = useTransform(scrollYProgress, [0.30, 0.34, 0.44, 0.48], [0, 1, 1, 0]);
+  const scalePrices = useTransform(scrollYProgress, [0.30, 0.34, 0.44, 0.48], [0.95, 1, 1, 0.95]);
 
-  // 4. Stage 3: Certificates
-  const opacityCertificates = useTransform(scrollYProgress, [0.62, 0.70, 0.80, 0.88], [0, 1, 1, 0]);
-  const scaleCertificates = useTransform(scrollYProgress, [0.62, 0.70, 0.80, 0.88], [0.95, 1, 1, 0.95]);
+  // 4. Stage 3: Certificates (Timeline range: Jan -> May -> Jun -> Sep)
+  const opacityCertificates = useTransform(scrollYProgress, [0.46, 0.50, 0.82, 0.86], [0, 1, 1, 0]);
+  const scaleCertificates = useTransform(scrollYProgress, [0.46, 0.50, 0.82, 0.86], [0.95, 1, 1, 0.95]);
 
   // 5. Stage 4: Testimonials
-  const opacityTestimonials = useTransform(scrollYProgress, [0.84, 0.91, 1], [0, 1, 1]);
-  const scaleTestimonials = useTransform(scrollYProgress, [0.84, 0.91, 1], [0.95, 1, 1]);
+  const opacityTestimonials = useTransform(scrollYProgress, [0.84, 0.89, 1], [0, 1, 1]);
+  const scaleTestimonials = useTransform(scrollYProgress, [0.84, 0.89, 1], [0.95, 1, 1]);
 
   // Synchronize the active section for sidebar menu indicator
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    if (latest < 0.20) {
+    if (latest < 0.14) {
       if (activeSection !== 'intro') setActiveSection('intro');
-    } else if (latest < 0.44) {
+    } else if (latest < 0.32) {
       if (activeSection !== 'projects') setActiveSection('projects');
-    } else if (latest < 0.66) {
+    } else if (latest < 0.48) {
       if (activeSection !== 'prices') setActiveSection('prices');
-    } else if (latest < 0.88) {
+    } else if (latest < 0.86) {
       if (activeSection !== 'certificates') setActiveSection('certificates');
     } else {
       if (activeSection !== 'testimonials') setActiveSection('testimonials');
@@ -78,16 +78,29 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
     const containerTop = containerRef.current.offsetTop;
     const totalScroll = containerRef.current.offsetHeight - window.innerHeight;
 
-    let targetRatio = 0.30;
+    let targetRatio = 0.22;
     if (sectionId.includes('prices')) {
-      targetRatio = 0.53;
+      targetRatio = 0.39;
     } else if (sectionId.includes('certificates')) {
-      targetRatio = 0.75;
+      targetRatio = 0.49;
     } else if (sectionId.includes('testimonials')) {
-      targetRatio = 0.96;
+      targetRatio = 0.94;
     } else {
-      targetRatio = 0.30;
+      targetRatio = 0.22;
     }
+
+    window.scrollTo({
+      top: containerTop + targetRatio * totalScroll,
+      behavior: 'smooth',
+    });
+  };
+
+  const handleNavigateToCert = (index: number) => {
+    if (!containerRef.current) return;
+    const containerTop = containerRef.current.offsetTop;
+    const totalScroll = containerRef.current.offsetHeight - window.innerHeight;
+    const certRatios = [0.49, 0.58, 0.67, 0.77];
+    const targetRatio = certRatios[index] || 0.49;
 
     window.scrollTo({
       top: containerTop + targetRatio * totalScroll,
@@ -98,8 +111,8 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
   const isIntro = activeSection === 'intro';
 
   return (
-    /* 520vh scroll container that drives the in-place crossfade across all 5 stages */
-    <div ref={containerRef} className="relative w-full h-[520vh]">
+    /* 740vh scroll container that drives the in-place crossfade across all stages */
+    <div ref={containerRef} className="relative w-full h-[740vh]">
       
       {/* 100vh Sticky Viewport: Everything stays fixed on screen while content fades in place! */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between select-none bg-white">
@@ -173,7 +186,7 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
                 </div>
               </motion.div>
 
-              {/* Stage 3: Certificates */}
+              {/* Stage 3: Certificates (Vertical Interactive Timeline) */}
               <motion.div
                 style={{
                   opacity: opacityCertificates,
@@ -185,6 +198,8 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
                 <div className="w-full">
                   <CertificatesSection
                     certificates={certificates}
+                    scrollYProgress={scrollYProgress}
+                    onNavigateToCert={handleNavigateToCert}
                   />
                 </div>
               </motion.div>
