@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
-import { LeftSidebarMenu } from './LeftSidebarMenu';
 import { HeroIntroSection } from './HeroIntroSection';
 import { ViktorStickyVisual } from './ViktorStickyVisual';
+import { PurpleStatementSection } from './PurpleStatementSection';
 import { ProjectsGrid } from './ProjectsGrid';
 import { PricingSection } from './PricingSection';
 import { CertificatesSection } from './CertificatesSection';
@@ -32,75 +32,62 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll progress through the 5-stage container (Intro -> Projects -> Prices -> Certificates -> Testimonials)
+  // Track scroll progress through the 6-stage container (Intro -> Philosophy -> Projects -> Prices -> Certificates -> Testimonials)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  // 1. Stage 0: Intro (Name & Quote)
-  const opacityIntro = useTransform(scrollYProgress, [0, 0.08, 0.14], [1, 1, 0]);
-  const scaleIntro = useTransform(scrollYProgress, [0, 0.08, 0.14], [1, 1, 0.94]);
+  // Dynamic background transition: starts clean white, blooms into solid rich purple as the purple figure expands
+  const stageBg = useTransform(scrollYProgress, [0.12, 0.17], ['#ffffff', '#a424c4']);
 
-  // 2. Stage 1: Projects
-  const opacityProjects = useTransform(scrollYProgress, [0.12, 0.17, 0.27, 0.32], [0, 1, 1, 0]);
-  const scaleProjects = useTransform(scrollYProgress, [0.12, 0.17, 0.27, 0.32], [0.95, 1, 1, 0.95]);
+  // 1. Stage 0: Intro (Name & Quote) - fades out smoothly as scroll advances
+  const opacityIntro = useTransform(scrollYProgress, [0, 0.08, 0.16], [1, 1, 0]);
+  const scaleIntro = useTransform(scrollYProgress, [0, 0.08, 0.16], [1, 1, 0.94]);
 
-  // 3. Stage 2: Prices
-  const opacityPrices = useTransform(scrollYProgress, [0.30, 0.34, 0.44, 0.48], [0, 1, 1, 0]);
-  const scalePrices = useTransform(scrollYProgress, [0.30, 0.34, 0.44, 0.48], [0.95, 1, 1, 0.95]);
+  // 2. Stage 1: Purple Statement Section (AI Philosophy & Viktor Suit Popup)
+  const opacityPhilosophy = useTransform(scrollYProgress, [0.15, 0.18, 0.47, 0.51], [0, 1, 1, 0]);
+  const scalePhilosophy = useTransform(scrollYProgress, [0.15, 0.18, 0.47, 0.51], [0.95, 1, 1, 0.95]);
 
-  // 4. Stage 3: Certificates (Timeline range: Jan -> May -> Jun -> Sep)
-  const opacityCertificates = useTransform(scrollYProgress, [0.46, 0.50, 0.82, 0.86], [0, 1, 1, 0]);
-  const scaleCertificates = useTransform(scrollYProgress, [0.46, 0.50, 0.82, 0.86], [0.95, 1, 1, 0.95]);
+  // 3. Stage 2: Projects
+  const opacityProjects = useTransform(scrollYProgress, [0.50, 0.54, 0.64, 0.68], [0, 1, 1, 0]);
+  const scaleProjects = useTransform(scrollYProgress, [0.50, 0.54, 0.64, 0.68], [0.95, 1, 1, 0.95]);
 
-  // 5. Stage 4: Testimonials
-  const opacityTestimonials = useTransform(scrollYProgress, [0.84, 0.89, 1], [0, 1, 1]);
-  const scaleTestimonials = useTransform(scrollYProgress, [0.84, 0.89, 1], [0.95, 1, 1]);
+  // 4. Stage 3: Prices
+  const opacityPrices = useTransform(scrollYProgress, [0.67, 0.71, 0.80, 0.84], [0, 1, 1, 0]);
+  const scalePrices = useTransform(scrollYProgress, [0.67, 0.71, 0.80, 0.84], [0.95, 1, 1, 0.95]);
 
-  // Synchronize the active section for sidebar menu indicator
+  // 5. Stage 4: Certificates (Timeline range: Jan -> May -> Jun -> Sep)
+  const opacityCertificates = useTransform(scrollYProgress, [0.83, 0.86, 0.93, 0.96], [0, 1, 1, 0]);
+  const scaleCertificates = useTransform(scrollYProgress, [0.83, 0.86, 0.93, 0.96], [0.95, 1, 1, 0.95]);
+
+  // 6. Stage 5: Testimonials
+  const opacityTestimonials = useTransform(scrollYProgress, [0.95, 0.98, 1], [0, 1, 1]);
+  const scaleTestimonials = useTransform(scrollYProgress, [0.95, 0.98, 1], [0.95, 1, 1]);
+
+  // Synchronize the active section for navigation indicator
   useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    if (latest < 0.14) {
+    if (latest < 0.17) {
       if (activeSection !== 'intro') setActiveSection('intro');
-    } else if (latest < 0.32) {
+    } else if (latest < 0.50) {
+      if (activeSection !== 'philosophy') setActiveSection('philosophy');
+    } else if (latest < 0.67) {
       if (activeSection !== 'projects') setActiveSection('projects');
-    } else if (latest < 0.48) {
+    } else if (latest < 0.83) {
       if (activeSection !== 'prices') setActiveSection('prices');
-    } else if (latest < 0.86) {
+    } else if (latest < 0.95) {
       if (activeSection !== 'certificates') setActiveSection('certificates');
     } else {
       if (activeSection !== 'testimonials') setActiveSection('testimonials');
     }
   });
 
-  const handleNavigateSection = (sectionId: string) => {
-    if (!containerRef.current) return;
-    const containerTop = containerRef.current.offsetTop;
-    const totalScroll = containerRef.current.offsetHeight - window.innerHeight;
-
-    let targetRatio = 0.22;
-    if (sectionId.includes('prices')) {
-      targetRatio = 0.39;
-    } else if (sectionId.includes('certificates')) {
-      targetRatio = 0.49;
-    } else if (sectionId.includes('testimonials')) {
-      targetRatio = 0.94;
-    } else {
-      targetRatio = 0.22;
-    }
-
-    window.scrollTo({
-      top: containerTop + targetRatio * totalScroll,
-      behavior: 'smooth',
-    });
-  };
-
   const handleNavigateToCert = (index: number) => {
     if (!containerRef.current) return;
     const containerTop = containerRef.current.offsetTop;
     const totalScroll = containerRef.current.offsetHeight - window.innerHeight;
-    const certRatios = [0.49, 0.58, 0.67, 0.77];
-    const targetRatio = certRatios[index] || 0.49;
+    const certRatios = [0.85, 0.88, 0.91, 0.94];
+    const targetRatio = certRatios[index] || 0.85;
 
     window.scrollTo({
       top: containerTop + targetRatio * totalScroll,
@@ -111,145 +98,131 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
   const isIntro = activeSection === 'intro';
 
   return (
-    /* 740vh scroll container that drives the in-place crossfade across all stages */
-    <div ref={containerRef} className="relative w-full h-[740vh]">
+    /* 1200vh scroll container that drives the in-place crossfade across all stages */
+    <div ref={containerRef} className="relative w-full h-[1200vh]">
       
-      {/* 100vh Sticky Viewport: Everything stays fixed on screen while content fades in place! */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between select-none bg-white">
+      {/* 100vh Sticky Viewport: Fixed on screen with dynamic background transition to purple! */}
+      <motion.div
+        style={{ backgroundColor: stageBg }}
+        className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between select-none transition-colors duration-200"
+      >
         
-        {/* Left Vertical Docked Sidebar (Projects, Prices, Certificates, Testimonials) */}
-        <LeftSidebarMenu
-          activeSection={activeSection}
-          onNavigateSection={handleNavigateSection}
-        />
-
-        {/* Main Stage Grid (Between Sidebar and Right Visual) */}
-        <div className="w-full h-full pl-16 sm:pl-28 lg:pl-48 pr-0 flex items-center justify-between relative transition-all duration-300">
+        {/* Main Stage Container (Full edge-to-edge for purple stages & centered max-w for content) */}
+        <div className="w-full h-full relative flex items-center justify-center transition-all duration-300">
           
-          {/* Middle Content Stage */}
-          <div
-            className={`h-full flex flex-col justify-between py-3 sm:py-5 lg:py-7 px-2 sm:px-4 lg:px-8 z-10 transition-all duration-500 ease-out ${
-              isIntro
-                ? 'w-full lg:w-[58%] xl:w-[54%]'
-                : 'w-full lg:w-[70%] xl:w-[66%]'
-            }`}
-          >
+          {/* Central Stage where all sections transition smoothly */}
+          <div className="relative w-full h-full flex items-center justify-center">
             
-            {/* Central Stage where all 5 sections transition smoothly in the exact same place */}
-            <div className="relative w-full flex-1 flex items-center justify-center my-auto min-h-[360px] sm:min-h-[440px] lg:min-h-[480px]">
-              
-              {/* Stage 0: Hero Intro (Text on top, photo with arrows underneath on mobile) */}
-              <motion.div
-                style={{
-                  opacity: opacityIntro,
-                  scale: scaleIntro,
-                  pointerEvents: activeSection === 'intro' ? 'auto' : 'none',
-                }}
-                className="absolute inset-0 flex flex-col lg:flex-row justify-between items-start lg:items-center w-full h-full overflow-hidden"
-              >
-                <div className="w-full flex-1 flex items-center justify-start">
-                  <HeroIntroSection />
-                </div>
-                {/* Mobile & Tablet Portrait + Arrows + Shine (Underneath the text) */}
-                <div className="lg:hidden w-full h-[200px] sm:h-[300px] flex items-end justify-end relative pointer-events-none mt-auto">
-                  <ViktorStickyVisual scrollYProgress={scrollYProgress} />
-                </div>
-              </motion.div>
+            {/* Stage 0: Hero Intro (Text on top, photo with arrows underneath on mobile) */}
+            <motion.div
+              style={{
+                opacity: opacityIntro,
+                scale: scaleIntro,
+                pointerEvents: activeSection === 'intro' ? 'auto' : 'none',
+              }}
+              className="absolute inset-0 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col lg:flex-row justify-between items-start lg:items-center w-full h-full overflow-hidden"
+            >
+              <div className="w-full flex-1 flex items-center justify-start">
+                <HeroIntroSection />
+              </div>
+              {/* Mobile & Tablet Portrait + Arrows + Shine (Underneath the text) */}
+              <div className="lg:hidden w-full h-[200px] sm:h-[300px] flex items-end justify-end relative pointer-events-none mt-auto">
+                <ViktorStickyVisual scrollYProgress={scrollYProgress} />
+              </div>
+            </motion.div>
 
-              {/* Stage 1: Projects Showcase */}
-              <motion.div
-                style={{
-                  opacity: opacityProjects,
-                  scale: scaleProjects,
-                  pointerEvents: activeSection === 'projects' ? 'auto' : 'none',
-                }}
-                className="absolute inset-0 flex items-center justify-center w-full"
-              >
-                <div className="w-full">
-                  <ProjectsGrid
-                    projects={projects}
-                    onSelectProject={onSelectProject}
-                  />
-                </div>
-              </motion.div>
+            {/* Stage 1: Purple Statement (AI Philosophy & Viktor Suit Popup) */}
+            <motion.div
+              style={{
+                opacity: opacityPhilosophy,
+                scale: scalePhilosophy,
+                pointerEvents: activeSection === 'philosophy' ? 'auto' : 'none',
+              }}
+              className="absolute inset-0 w-full h-full overflow-hidden"
+            >
+              <PurpleStatementSection
+                scrollYProgress={scrollYProgress}
+                scrollRange={[0.16, 0.50]}
+              />
+            </motion.div>
 
-              {/* Stage 2: Prices */}
-              <motion.div
-                style={{
-                  opacity: opacityPrices,
-                  scale: scalePrices,
-                  pointerEvents: activeSection === 'prices' ? 'auto' : 'none',
-                }}
-                className="absolute inset-0 flex items-center justify-center w-full"
-              >
-                <div className="w-full">
-                  <PricingSection
-                    plans={plans}
-                    onOpenContact={onOpenContact}
-                  />
-                </div>
-              </motion.div>
+            {/* Stage 2: Projects Showcase */}
+            <motion.div
+              style={{
+                opacity: opacityProjects,
+                scale: scaleProjects,
+                pointerEvents: activeSection === 'projects' ? 'auto' : 'none',
+              }}
+              className="absolute inset-0 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-center w-full"
+            >
+              <div className="w-full">
+                <ProjectsGrid
+                  projects={projects}
+                  onSelectProject={onSelectProject}
+                />
+              </div>
+            </motion.div>
 
-              {/* Stage 3: Certificates (Vertical Interactive Timeline) */}
-              <motion.div
-                style={{
-                  opacity: opacityCertificates,
-                  scale: scaleCertificates,
-                  pointerEvents: activeSection === 'certificates' ? 'auto' : 'none',
-                }}
-                className="absolute inset-0 flex items-center justify-center w-full"
-              >
-                <div className="w-full">
-                  <CertificatesSection
-                    certificates={certificates}
-                    scrollYProgress={scrollYProgress}
-                    onNavigateToCert={handleNavigateToCert}
-                  />
-                </div>
-              </motion.div>
+            {/* Stage 3: Prices */}
+            <motion.div
+              style={{
+                opacity: opacityPrices,
+                scale: scalePrices,
+                pointerEvents: activeSection === 'prices' ? 'auto' : 'none',
+              }}
+              className="absolute inset-0 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-center w-full"
+            >
+              <div className="w-full">
+                <PricingSection
+                  plans={plans}
+                  onOpenContact={onOpenContact}
+                />
+              </div>
+            </motion.div>
 
-              {/* Stage 4: Testimonials */}
-              <motion.div
-                style={{
-                  opacity: opacityTestimonials,
-                  scale: scaleTestimonials,
-                  pointerEvents: activeSection === 'testimonials' ? 'auto' : 'none',
-                }}
-                className="absolute inset-0 flex items-center justify-center w-full"
-              >
-                <div className="w-full">
-                  <TestimonialsSection
-                    testimonials={testimonials}
-                    onOpenContact={onOpenContact}
-                  />
-                </div>
-              </motion.div>
+            {/* Stage 4: Certificates (Vertical Interactive Timeline) */}
+            <motion.div
+              style={{
+                opacity: opacityCertificates,
+                scale: scaleCertificates,
+                pointerEvents: activeSection === 'certificates' ? 'auto' : 'none',
+              }}
+              className="absolute inset-0 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-center w-full"
+            >
+              <div className="w-full">
+                <CertificatesSection
+                  certificates={certificates}
+                  scrollYProgress={scrollYProgress}
+                  onNavigateToCert={handleNavigateToCert}
+                />
+              </div>
+            </motion.div>
 
-            </div>
-
-            {/* Bottom Status / Navigation hint */}
-            <div className="shrink-0 pt-2 flex items-center justify-between text-[11px] text-slate-400 font-mono">
-              <span className="font-bold text-cyan-700 uppercase">
-                {activeSection === 'intro' && 'НАЧАЛО • ВИКТОР ШАНДРОВ'}
-                {activeSection === 'projects' && '1 / 4 • ПРОЕКТИ'}
-                {activeSection === 'prices' && '2 / 4 • ЦЕНИ И ПАКЕТИ'}
-                {activeSection === 'certificates' && '3 / 4 • СЕРТИФИКАТИ'}
-                {activeSection === 'testimonials' && '4 / 4 • ОТЗИВИ'}
-              </span>
-              <span className="text-slate-400 flex items-center gap-1.5">
-                <span>Скролвайте за следваща секция</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00a8ff] animate-ping" />
-              </span>
-            </div>
+            {/* Stage 5: Testimonials */}
+            <motion.div
+              style={{
+                opacity: opacityTestimonials,
+                scale: scaleTestimonials,
+                pointerEvents: activeSection === 'testimonials' ? 'auto' : 'none',
+              }}
+              className="absolute inset-0 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-center w-full"
+            >
+              <div className="w-full">
+                <TestimonialsSection
+                  testimonials={testimonials}
+                  onOpenContact={onOpenContact}
+                />
+              </div>
+            </motion.div>
 
           </div>
 
-          {/* Right Column: Fixed Sticky Viktor Portrait & Pop-Out 3D Arrows */}
+          {/* Right Column (Hero Intro Desktop Viktor Portrait) */}
           <div
-            className={`hidden lg:flex h-full items-end justify-end relative z-20 pointer-events-none transition-all duration-500 ease-out ${
+            className={`hidden lg:flex h-full items-end justify-end absolute right-4 lg:right-12 bottom-0 z-20 pointer-events-none transition-all duration-500 ease-out ${
               isIntro
-                ? 'lg:w-[42%] xl:w-[46%]'
-                : 'lg:w-[30%] xl:w-[34%]'
+                ? 'opacity-100'
+                : 'opacity-0 pointer-events-none overflow-hidden'
             }`}
           >
             <ViktorStickyVisual scrollYProgress={scrollYProgress} showArrows={isIntro} />
@@ -257,7 +230,7 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
 
         </div>
 
-      </div>
+      </motion.div>
 
     </div>
   );

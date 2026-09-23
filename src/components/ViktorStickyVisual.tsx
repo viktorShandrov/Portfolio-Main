@@ -27,22 +27,27 @@ interface ViktorStickyVisualProps {
 export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
   scrollYProgress,
 }) => {
-  // Synchronize arrows/badges fade & scale with the hero intro scroll progression [0, 0.08, 0.14]
+  // Synchronize arrows/badges fade & scale with the hero intro scroll progression
   const fallbackScroll = useMotionValue(0);
   const effectiveScroll = scrollYProgress || fallbackScroll;
-  const arrowsOpacity = useTransform(effectiveScroll, [0, 0.08, 0.14], [1, 1, 0]);
-  const arrowsScale = useTransform(effectiveScroll, [0, 0.08, 0.14], [1, 1, 0.94]);
+  
+  // Portrait, arrows and emoji fade out as scroll progresses
+  const elementsOpacity = useTransform(effectiveScroll, [0, 0.08, 0.16], [1, 1, 0]);
+  const elementsScale = useTransform(effectiveScroll, [0, 0.08, 0.16], [1, 1, 0.94]);
+
+  // The purple badge figure itself grows slower and smoother on scroll to cover the entire screen
+  const purpleCircleScale = useTransform(
+    effectiveScroll,
+    [0, 0.05, 0.12, 0.22],
+    [1, 2.2, 10, 85]
+  );
+  const purpleCircleRotate = useTransform(effectiveScroll, [0, 0.22], [0, 90]);
 
   return (
     <div className="relative w-full h-full min-h-[220px] sm:min-h-[340px] lg:min-h-[500px] lg:h-screen flex items-end justify-end select-none overflow-visible">
       
-      {/* 3 Layered Overlapping Arrows & Floating Badges Container (Synchronized with Intro scroll) */}
-      <motion.div
-        style={{
-          opacity: arrowsOpacity,
-          scale: arrowsScale,
-          zIndex: ARROWS_SETTINGS.zIndex.arrowsContainer,
-        }}
+      {/* 3 Layered Overlapping Arrows & Floating Badges Container */}
+      <div
         className={`absolute ${ARROWS_SETTINGS.rightPosition} ${ARROWS_SETTINGS.bottomPosition} ${ARROWS_SETTINGS.scale} origin-bottom-right pointer-events-none w-[240px] sm:w-[360px] lg:w-[480px] xl:w-[540px] aspect-square flex items-end justify-end`}
       >
         <motion.div
@@ -66,17 +71,14 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
           }}
           className="relative w-full h-full flex items-end justify-end"
         >
-            {/* Top-Left: Purple Badge with Pop-Up Entrance & Continuous Spin */}
+            {/* Top-Left: Expanding Purple Badge Figure (No extra circle around it) */}
             <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 280,
-                damping: 14,
-                delay: 1,
+              style={{
+                zIndex: 60,
+                scale: purpleCircleScale,
+                rotate: purpleCircleRotate,
+                transformOrigin: 'center center',
               }}
-              style={{ zIndex: ARROWS_SETTINGS.zIndex.purpleBadge }}
               className="absolute top-[8%] left-[10%] sm:left-[-30%] lg:left-[-45%] w-11 h-11 sm:w-16 sm:h-16 lg:w-24 lg:h-24 pointer-events-auto"
             >
               <motion.img
@@ -88,56 +90,64 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
                   duration: 14,
                   ease: 'linear',
                 }}
-                className="w-full h-full object-contain drop-shadow-md select-none"
+                className="w-full h-full object-contain select-none"
               />
             </motion.div>
 
-            {/* Bottom-Left: Yellow Smiling Emoji with Pop-Up Entrance & Continuous Spin */}
+            {/* Other arrows & emoji that fade out on scroll */}
             <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                type: 'spring',
-                stiffness: 280,
-                damping: 14,
-                delay: 1.5,
+              style={{
+                opacity: elementsOpacity,
+                scale: elementsScale,
               }}
-              style={{ zIndex: ARROWS_SETTINGS.zIndex.emoji }}
-              className="absolute bottom-[6%] left-[2%] sm:left-[10%] lg:left-[20%] w-9 h-9 sm:w-14 sm:h-14 lg:w-20 lg:h-20 pointer-events-auto"
+              className="relative w-full h-full pointer-events-none"
             >
-              <motion.img
-                src="/assets/emoji_smile.png"
-                alt="Smiling Emoji"
-                animate={{ rotate: 360 }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 12,
-                  ease: 'linear',
-                }}
-                className="w-full h-full object-contain drop-shadow-md select-none"
-              />
-            </motion.div>
-
-            {/* Overlapping Arrows Box */}
-            <div className="relative w-full h-full">
-              {/* 1. Lavender Arrow (Backmost) */}
+              {/* Bottom-Left: Yellow Smiling Emoji with Pop-Up Entrance & Continuous Spin */}
               <motion.div
-                initial={{ opacity: 0, x: -60, y: 60 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                style={{
-                  right: ARROWS_SETTINGS.lavender.right,
-                  top: ARROWS_SETTINGS.lavender.top,
-                  zIndex: ARROWS_SETTINGS.zIndex.lavenderArrow,
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 280,
+                  damping: 14,
+                  delay: 1.5,
                 }}
-                className="absolute w-[68%]"
+                style={{ zIndex: ARROWS_SETTINGS.zIndex.emoji }}
+                className="absolute bottom-[6%] left-[2%] sm:left-[10%] lg:left-[20%] w-9 h-9 sm:w-14 sm:h-14 lg:w-20 lg:h-20 pointer-events-auto"
               >
-                <img
-                  src="/assets/arrow_lavender_tight.png"
-                  alt="Lavender Arrow"
-                  className="w-full h-auto object-contain drop-shadow-lg"
+                <motion.img
+                  src="/assets/emoji_smile.png"
+                  alt="Smiling Emoji"
+                  animate={{ rotate: 360 }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 12,
+                    ease: 'linear',
+                  }}
+                  className="w-full h-full object-contain drop-shadow-md select-none"
                 />
               </motion.div>
+
+              {/* Overlapping Arrows Box */}
+              <div className="relative w-full h-full">
+                {/* 1. Lavender Arrow (Backmost) */}
+                <motion.div
+                  initial={{ opacity: 0, x: -60, y: 60 }}
+                  animate={{ opacity: 1, x: 0, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  style={{
+                    right: ARROWS_SETTINGS.lavender.right,
+                    top: ARROWS_SETTINGS.lavender.top,
+                    zIndex: ARROWS_SETTINGS.zIndex.lavenderArrow,
+                  }}
+                  className="absolute w-[68%]"
+                >
+                  <img
+                    src="/assets/arrow_lavender_tight.png"
+                    alt="Lavender Arrow"
+                    className="w-full h-auto object-contain drop-shadow-lg"
+                  />
+                </motion.div>
 
               {/* 2. Orange Arrow (Middle) */}
               <motion.div
@@ -179,25 +189,30 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
             </div>
           </motion.div>
         </motion.div>
+      </div>
 
-      {/* Viktor's Official Portrait (Bouncy Spring Pop-Up with Natural Overshoot) */}
+      {/* Viktor's Official Portrait (Bouncy Spring Pop-Up with Natural Overshoot & Smooth Scroll Fade) */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.25, y: 50 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{
-          type: 'spring',
-          stiffness: 190,
-          damping: 12,
-          mass: 0.5,
-          delay: 0.15,
-        }}
         style={{
+          opacity: elementsOpacity,
+          scale: elementsScale,
           zIndex: ARROWS_SETTINGS.zIndex.portrait,
           transformOrigin: 'bottom right',
         }}
         className="relative w-full h-full flex items-end justify-end pointer-events-none origin-bottom-right"
       >
-        <div className="relative inline-flex items-end justify-end pointer-events-auto group">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.25, y: 50 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{
+            type: 'spring',
+            stiffness: 190,
+            damping: 12,
+            mass: 0.5,
+            delay: 0.15,
+          }}
+          className="relative inline-flex items-end justify-end pointer-events-auto group w-full h-full"
+        >
           {/* Base portrait image */}
           <img
             src="/assets/blue.png"
@@ -257,7 +272,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
               }}
             />
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </div>
   );

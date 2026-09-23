@@ -80,7 +80,7 @@ export const App: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <footer className={`w-full bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-xs z-30 relative ${!selectedProject ? 'pl-16 sm:pl-28 lg:pl-48' : ''}`}>
+      <footer className="w-full bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-xs z-30 relative">
         <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left text-slate-300">
             © {new Date().getFullYear()} <strong className="text-white">Виктор Шандров</strong> — Уеб Дизайнер и Разработчик
