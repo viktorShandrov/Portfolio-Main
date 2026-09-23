@@ -118,6 +118,7 @@ export const projectsData: Project[] = [
     
     // 📸 СПИСЪК С ЛИНКОВЕ КЪМ СНИМКИТЕ:
     images: [
+      'https://i.ibb.co/Cs61ggwm/Gemini-Generated-Image-23s5hu23s5hu23s5.jpg',
       'https://i.ibb.co/G40RjGyb/Screenshot-20.png',
       'https://i.ibb.co/yBs0xDBq/Screenshot-19.png',
       'https://i.ibb.co/4ZrZyymS/Screenshot-18.png',

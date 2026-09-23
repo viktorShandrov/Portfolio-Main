@@ -4,7 +4,6 @@ import { HeroIntroSection } from './HeroIntroSection';
 import { ViktorStickyVisual } from './ViktorStickyVisual';
 import { PurpleStatementSection } from './PurpleStatementSection';
 import { Projects3DStage } from './Projects3DStage';
-import { PricingSection } from './PricingSection';
 import { CertificatesSection } from './CertificatesSection';
 import { TestimonialsSection } from './TestimonialsSection';
 import { Project, PricingPlan, Testimonial, Certificate } from '../types';
@@ -120,33 +119,18 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
         </motion.div>
       </div>
 
-      {/* 2. Pinned 3D Projects Showcase Section */}
+      {/* 2. Pinned 3D Projects Showcase Section that Morphs into Prices */}
       <section id="projects-section" className="w-full">
         <Projects3DStage
           projects={projects}
+          plans={plans}
           onSelectProject={onSelectProject}
+          onOpenContact={onOpenContact}
         />
       </section>
 
-      {/* 3. Real Vertical Scrolling Content Flow (Prices, Certificates, Testimonials, Footer) */}
-      <div className="w-full bg-[#a424c4] text-slate-900 relative z-30">
-
-        {/* Section 2: Prices & Packages */}
-        <motion.section
-          id="prices-section"
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full py-16 sm:py-24 px-4 sm:px-6 max-w-5xl mx-auto flex items-center justify-center"
-        >
-          <div className="w-full">
-            <PricingSection
-              plans={plans}
-              onOpenContact={onOpenContact}
-            />
-          </div>
-        </motion.section>
+      {/* 3. Real Vertical Scrolling Content Flow (Certificates, Testimonials, Footer) with matching dark background */}
+      <div className="w-full bg-[#070714] text-slate-100 relative z-30">
 
         {/* Section 3: Certificates & SoftUni Timeline */}
         <motion.section
