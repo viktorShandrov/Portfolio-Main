@@ -3,40 +3,40 @@ import { motion, MotionValue, useTransform, useMotionValue } from 'framer-motion
 
 interface PurpleStatementSectionProps {
   scrollYProgress?: MotionValue<number>;
-  // Range where this section is active in the master scroll container [start, end]
+  // Range where this section is active in the pinned sequence [start, end]
   scrollRange?: [number, number];
 }
 
 export const PurpleStatementSection: React.FC<PurpleStatementSectionProps> = ({
   scrollYProgress,
-  scrollRange = [0.16, 0.50],
+  scrollRange = [0.28, 0.95],
 }) => {
   const fallbackScroll = useMotionValue(scrollRange[0]);
   const progress = scrollYProgress || fallbackScroll;
   const [start, end] = scrollRange;
   const duration = end - start;
 
-  // Keyframes for entrance, full text scroll, and exit
+  // Keyframes
   const enterStart = start;
   const enterEnd = start + duration * 0.12;
-  const textScrollEnd = start + duration * 0.92; // Full text has completely finished scrolling past the left edge
+  const textScrollEnd = start + duration * 0.95; // Full text finishes moving past left screen edge
   const exitEnd = end;
 
   // 1. Viktor Chest-Up Cutout Animation (Pops up from bottom-0 with smooth spring & scale)
   const portraitY = useTransform(
     progress,
     [enterStart, enterEnd, textScrollEnd, exitEnd],
-    [260, 0, 0, 100]
+    [260, 0, 0, 0]
   );
   const portraitScale = useTransform(
     progress,
     [enterStart, enterEnd, textScrollEnd, exitEnd],
-    [0.85, 1, 1, 0.95]
+    [0.85, 1, 1, 1]
   );
   const portraitOpacity = useTransform(
     progress,
     [enterStart, enterEnd, textScrollEnd, exitEnd],
-    [0, 1, 1, 0]
+    [0, 1, 1, 1]
   );
 
   // 2. Single-line Continuous Horizontal Text Scroll (Right to Left across the full screen)
@@ -49,7 +49,7 @@ export const PurpleStatementSection: React.FC<PurpleStatementSectionProps> = ({
   const textOpacity = useTransform(
     progress,
     [enterStart, enterEnd, textScrollEnd, exitEnd],
-    [0, 1, 1, 0]
+    [0, 1, 1, 1]
   );
 
   return (
