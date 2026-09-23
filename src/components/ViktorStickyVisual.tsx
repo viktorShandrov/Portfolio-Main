@@ -11,9 +11,9 @@ export const ARROWS_SETTINGS = {
     purpleBadge: 25,
     emoji: 25,
   },
-  rightPosition: 'right-[6%] sm:right-[10%] lg:right-[8%] xl:right-[5%]',
-  bottomPosition: 'bottom-0 sm:bottom-4 lg:bottom-0',
-  scale: 'scale-90 sm:scale-100 lg:scale-110 xl:scale-120',
+  rightPosition: 'right-[-4%] sm:right-[2%] lg:right-[8%] xl:right-[5%]',
+  bottomPosition: 'bottom-0 sm:bottom-2 lg:bottom-0',
+  scale: 'scale-55 sm:scale-75 md:scale-90 lg:scale-110 xl:scale-120',
   lavender: { right: '0%',  top: '0%'   },
   orange:   { right: '6%', top: '12%'  },
   green:    { right: '12%', top: '24%'  },
@@ -34,7 +34,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
   const arrowsScale = useTransform(effectiveScroll, [0, 0.08, 0.14], [1, 1, 0.94]);
 
   return (
-    <div className="relative w-full h-full min-h-[500px] lg:h-screen flex items-end justify-end select-none overflow-visible">
+    <div className="relative w-full h-full min-h-[220px] sm:min-h-[340px] lg:min-h-[500px] lg:h-screen flex items-end justify-end select-none overflow-visible">
       
       {/* 3 Layered Overlapping Arrows & Floating Badges Container (Synchronized with Intro scroll) */}
       <motion.div
@@ -43,7 +43,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
           scale: arrowsScale,
           zIndex: ARROWS_SETTINGS.zIndex.arrowsContainer,
         }}
-        className={`absolute ${ARROWS_SETTINGS.rightPosition} ${ARROWS_SETTINGS.bottomPosition} ${ARROWS_SETTINGS.scale} pointer-events-none w-[340px] sm:w-[440px] lg:w-[480px] xl:w-[540px] aspect-square flex items-end justify-end`}
+        className={`absolute ${ARROWS_SETTINGS.rightPosition} ${ARROWS_SETTINGS.bottomPosition} ${ARROWS_SETTINGS.scale} origin-bottom-right pointer-events-none w-[240px] sm:w-[360px] lg:w-[480px] xl:w-[540px] aspect-square flex items-end justify-end`}
       >
         <motion.div
           key="arrows-cluster-inner"
@@ -77,7 +77,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
                 delay: 1,
               }}
               style={{ zIndex: ARROWS_SETTINGS.zIndex.purpleBadge }}
-              className="absolute top-[10%] left-[50%] sm:left-[-50%] w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 pointer-events-auto"
+              className="absolute top-[8%] left-[10%] sm:left-[-30%] lg:left-[-45%] w-11 h-11 sm:w-16 sm:h-16 lg:w-24 lg:h-24 pointer-events-auto"
             >
               <motion.img
                 src="/assets/purple_badge.png"
@@ -103,7 +103,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
                 delay: 1.5,
               }}
               style={{ zIndex: ARROWS_SETTINGS.zIndex.emoji }}
-              className="absolute bottom-[10%] left-[0%] sm:left-[25%] w-12 h-12 sm:w-20 sm:h-20 lg:w-20 lg:h-20 pointer-events-auto"
+              className="absolute bottom-[6%] left-[2%] sm:left-[10%] lg:left-[20%] w-9 h-9 sm:w-14 sm:h-14 lg:w-20 lg:h-20 pointer-events-auto"
             >
               <motion.img
                 src="/assets/emoji_smile.png"
@@ -202,7 +202,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
           <img
             src="/assets/blue.png"
             alt="Виктор Шандров"
-            className="w-auto h-auto max-h-[500px] sm:max-h-[600px] lg:max-h-[85vh] xl:max-h-[92vh] object-contain object-bottom drop-shadow-[0_15px_35px_rgba(0,0,0,0.15)] transition-transform duration-500"
+            className="w-auto h-auto max-h-[220px] sm:max-h-[360px] md:max-h-[480px] lg:max-h-[85vh] xl:max-h-[92vh] object-contain object-bottom drop-shadow-[0_15px_35px_rgba(0,0,0,0.15)] transition-transform duration-500"
           />
 
           {/* Luminous Light Sweep / Shine Overlay (Strictly alpha-masked to the person's silhouette) */}

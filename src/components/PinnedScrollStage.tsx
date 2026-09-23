@@ -124,11 +124,11 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
         />
 
         {/* Main Stage Grid (Between Sidebar and Right Visual) */}
-        <div className="w-full h-full pl-36 sm:pl-44 lg:pl-48 pr-0 flex items-center justify-between relative">
+        <div className="w-full h-full pl-16 sm:pl-28 lg:pl-48 pr-0 flex items-center justify-between relative transition-all duration-300">
           
           {/* Middle Content Stage */}
           <div
-            className={`h-full flex flex-col justify-between py-5 sm:py-7 px-4 sm:px-6 lg:px-8 z-10 transition-all duration-500 ease-out ${
+            className={`h-full flex flex-col justify-between py-3 sm:py-5 lg:py-7 px-2 sm:px-4 lg:px-8 z-10 transition-all duration-500 ease-out ${
               isIntro
                 ? 'w-full lg:w-[58%] xl:w-[54%]'
                 : 'w-full lg:w-[70%] xl:w-[66%]'
@@ -136,19 +136,23 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
           >
             
             {/* Central Stage where all 5 sections transition smoothly in the exact same place */}
-            <div className="relative w-full flex-1 flex items-center justify-center my-auto min-h-[420px] sm:min-h-[480px]">
+            <div className="relative w-full flex-1 flex items-center justify-center my-auto min-h-[360px] sm:min-h-[440px] lg:min-h-[480px]">
               
-              {/* Stage 0: Hero Intro */}
+              {/* Stage 0: Hero Intro (Text on top, photo with arrows underneath on mobile) */}
               <motion.div
                 style={{
                   opacity: opacityIntro,
                   scale: scaleIntro,
                   pointerEvents: activeSection === 'intro' ? 'auto' : 'none',
                 }}
-                className="absolute inset-0 flex items-center justify-start w-full"
+                className="absolute inset-0 flex flex-col lg:flex-row justify-between items-start lg:items-center w-full h-full overflow-hidden"
               >
-                <div className="w-full">
+                <div className="w-full flex-1 flex items-center justify-start">
                   <HeroIntroSection />
+                </div>
+                {/* Mobile & Tablet Portrait + Arrows + Shine (Underneath the text) */}
+                <div className="lg:hidden w-full h-[200px] sm:h-[300px] flex items-end justify-end relative pointer-events-none mt-auto">
+                  <ViktorStickyVisual scrollYProgress={scrollYProgress} />
                 </div>
               </motion.div>
 
