@@ -73,7 +73,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
                 type: 'spring',
                 stiffness: 280,
                 damping: 14,
-                delay: 0.3,
+                delay: 1,
               }}
               style={{ zIndex: ARROWS_SETTINGS.zIndex.purpleBadge }}
               className="absolute top-[10%] left-[50%] sm:left-[-50%] w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 pointer-events-auto"
@@ -99,7 +99,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
                 type: 'spring',
                 stiffness: 280,
                 damping: 14,
-                delay: 0.4,
+                delay: 1.5,
               }}
               style={{ zIndex: ARROWS_SETTINGS.zIndex.emoji }}
               className="absolute bottom-[10%] left-[0%] sm:left-[25%] w-12 h-12 sm:w-20 sm:h-20 lg:w-20 lg:h-20 pointer-events-auto"
