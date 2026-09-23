@@ -197,11 +197,67 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
         }}
         className="relative w-full h-full flex items-end justify-end pointer-events-none origin-bottom-right"
       >
-        <img
-          src="/assets/blue.png"
-          alt="Виктор Шандров"
-          className="w-auto h-auto max-h-[500px] sm:max-h-[600px] lg:max-h-[85vh] xl:max-h-[92vh] object-contain object-bottom drop-shadow-[0_15px_35px_rgba(0,0,0,0.15)] pointer-events-auto transition-transform duration-500"
-        />
+        <div className="relative inline-flex items-end justify-end pointer-events-auto group">
+          {/* Base portrait image */}
+          <img
+            src="/assets/blue.png"
+            alt="Виктор Шандров"
+            className="w-auto h-auto max-h-[500px] sm:max-h-[600px] lg:max-h-[85vh] xl:max-h-[92vh] object-contain object-bottom drop-shadow-[0_15px_35px_rgba(0,0,0,0.15)] transition-transform duration-500"
+          />
+
+          {/* Luminous Light Sweep / Shine Overlay (Strictly alpha-masked to the person's silhouette) */}
+          <div
+            className="absolute inset-0 pointer-events-none overflow-hidden"
+            style={{
+              WebkitMaskImage: 'url(/assets/blue.png)',
+              maskImage: 'url(/assets/blue.png)',
+              WebkitMaskSize: 'contain',
+              maskSize: 'contain',
+              WebkitMaskRepeat: 'no-repeat',
+              maskRepeat: 'no-repeat',
+              WebkitMaskPosition: 'bottom right',
+              maskPosition: 'bottom right',
+            }}
+          >
+            {/* Soft Ambient Light Glow Wave */}
+            <motion.div
+              className="absolute inset-0 w-[260%] h-[260%] -top-[80%] -left-[80%]"
+              initial={{ transform: 'translateX(-120%) translateY(120%) rotate(-35deg)' }}
+              animate={{ transform: 'translateX(120%) translateY(-120%) rotate(-35deg)' }}
+              transition={{
+                // repeat: Infinity,
+                repeatDelay: 3.2,
+                duration: 5,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
+              style={{
+                background:
+                  'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0.2) 42%, rgba(255,255,255,0.7) 49%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.7) 51%, rgba(255,255,255,0.2) 58%, rgba(255,255,255,0) 68%, transparent 100%)',
+                mixBlendMode: 'screen',
+              }}
+            />
+
+            {/* Sharp Specular Gleam Streak */}
+            <motion.div
+              className="absolute inset-0 w-[260%] h-[260%] -top-[80%] -left-[80%]"
+              initial={{ transform: 'translateX(-120%) translateY(120%) rotate(-35deg)' }}
+              animate={{ transform: 'translateX(120%) translateY(-120%) rotate(-35deg)' }}
+              transition={{
+                // repeat: Infinity,
+                repeatDelay: 3.2,
+                duration: 5,
+                delay: 0.05,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
+              style={{
+                background:
+                  'linear-gradient(90deg, transparent 0%, rgba(186,230,253,0) 44%, rgba(255,255,255,0.6) 49.5%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.6) 50.5%, rgba(186,230,253,0) 56%, transparent 100%)',
+                filter: 'blur(2px)',
+                mixBlendMode: 'screen',
+              }}
+            />
+          </div>
+        </div>
       </motion.div>
     </div>
   );
