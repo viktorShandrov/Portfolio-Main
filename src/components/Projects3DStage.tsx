@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { Project, PricingPlan } from '../types';
-import { ArrowUpRight, Sparkles, Layout, FileText, CreditCard, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, Sparkles, ArrowRight } from 'lucide-react';
+import { PricingSection } from './PricingSection';
 
 interface Projects3DStageProps {
   projects: Project[];
@@ -9,36 +10,6 @@ interface Projects3DStageProps {
   onSelectProject: (project: Project) => void;
   onOpenContact: () => void;
 }
-
-const PRICING_TIERS = [
-  {
-    price: '75 €',
-    title: 'Инфо & Снимки',
-    badge: 'Базов сайт',
-    description: 'Презентация на дейността, снимкова галерия, контактна форма и мобилен дизайн.',
-    icon: Layout,
-    iconColor: 'text-blue-500 bg-blue-50',
-    badgeColor: 'bg-blue-50 text-blue-700 border-blue-200/60',
-  },
-  {
-    price: '100 €',
-    title: 'Продукти & Статии',
-    badge: '+ Съдържание',
-    description: 'Добавяне на каталог за продукти, блог система за статии и филтри.',
-    icon: FileText,
-    iconColor: 'text-[#00a8ff] bg-sky-50',
-    badgeColor: 'bg-sky-50 text-[#0077b6] border-sky-200/60',
-  },
-  {
-    price: '125 €',
-    title: 'Плащания & Системи',
-    badge: '+ Интеграции',
-    description: 'Онлайн плащания (Stripe), автоматични резервации и Telegram известия.',
-    icon: CreditCard,
-    iconColor: 'text-indigo-600 bg-indigo-50',
-    badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200/60',
-  },
-];
 
 export const Projects3DStage: React.FC<Projects3DStageProps> = ({
   projects,
@@ -69,9 +40,9 @@ export const Projects3DStage: React.FC<Projects3DStageProps> = ({
   const rotateZ = useTransform(scrollYProgress, [0.74, 0.92], [1.5, 0]);
 
   // Card boundary expansion to full screen:
-  // As it straightens, borders expand, rounded corners flatten to 0, and container scales to cover the entire viewport
-  const cardScale = useTransform(scrollYProgress, [0.75, 0.94], [1, 1.34]);
-  const contentCounterScale = useTransform(scrollYProgress, [0.75, 0.94], [1, 0.82]);
+  // As it straightens, borders expand and container gently scales to fit the viewport comfortably
+  const cardScale = useTransform(scrollYProgress, [0.75, 0.94], [1, 1.05]);
+  const contentCounterScale = useTransform(scrollYProgress, [0.75, 0.94], [1, 1]);
   const cardBorderRadius = useTransform(scrollYProgress, [0.76, 0.92], ['24px', '0px']);
   const cardBorderWidth = useTransform(scrollYProgress, [0.76, 0.92], ['2px', '0px']);
   const cardShadow = useTransform(
@@ -262,7 +233,7 @@ export const Projects3DStage: React.FC<Projects3DStageProps> = ({
                   borderWidth: cardBorderWidth,
                   boxShadow: cardShadow,
                 }}
-                className="relative shrink-0 w-[580px] sm:w-[780px] md:w-[900px] lg:w-[1020px] xl:w-[1120px] aspect-[16/6] sm:aspect-[16/5.4] overflow-hidden border-cyan-400/80 bg-gradient-to-br from-slate-900 via-slate-950 to-purple-950 flex items-center justify-center p-4 sm:p-8"
+                className="relative shrink-0 w-[580px] sm:w-[780px] md:w-[920px] lg:w-[1040px] xl:w-[1140px] min-h-[480px] overflow-hidden border-cyan-400/80 bg-gradient-to-br from-slate-900 via-slate-950 to-purple-950 flex items-center justify-center p-2 sm:p-4"
               >
                 {/* 3D Preview State (Visible when entering from distance) */}
                 <motion.div
@@ -307,73 +278,15 @@ export const Projects3DStage: React.FC<Projects3DStageProps> = ({
                   </div>
                 </motion.div>
 
-                {/* Full Flattened 90-degree Interactive Pricing View (Unfolds in Center) */}
+                {/* Full Flattened 90-degree Interactive Comparison Table (Unfolds in Center) */}
                 <motion.div
                   style={{
                     opacity: pricingDetailOpacity,
                     scale: contentCounterScale,
                   }}
-                  className="relative z-20 w-full max-w-3xl mx-auto flex flex-col justify-center"
+                  className="relative z-20 w-full max-w-5xl mx-auto flex flex-col justify-center"
                 >
-                  {/* Header */}
-                  <div className="text-center mb-3 sm:mb-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-cyan-400/20 border border-cyan-400/40 text-cyan-300 text-[11px] font-mono font-black uppercase tracking-widest mb-1.5">
-                      ПАКЕТНИ ЦЕНИ & УСЛУГИ
-                    </div>
-                    <h2 className="text-white font-black text-xl sm:text-3xl tracking-tight drop-shadow-md">
-                      Как се формира цената
-                    </h2>
-                    <p className="text-purple-100/80 text-xs sm:text-sm font-medium mt-0.5">
-                      Взимам между <span className="font-bold text-cyan-300">75 € и 125 € на проект</span> според сложността:
-                    </p>
-                  </div>
-
-                  {/* Clean Informative Card List */}
-                  <div className="bg-white rounded-2xl p-2.5 sm:p-3.5 shadow-2xl border border-white/20 divide-y divide-slate-100 mb-3 sm:mb-4 text-slate-900">
-                    {PRICING_TIERS.map((tier) => {
-                      const Icon = tier.icon;
-                      return (
-                        <div
-                          key={tier.price}
-                          className="flex items-center justify-between gap-3 p-2.5 sm:p-3 hover:bg-slate-50/80 rounded-xl transition-colors"
-                        >
-                          <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
-                            <div className={`w-9 h-9 rounded-xl ${tier.iconColor} flex items-center justify-center shrink-0`}>
-                              <Icon className="w-4 h-4" />
-                            </div>
-                            <div className="min-w-0">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <span className="font-extrabold text-slate-900 text-xs sm:text-sm">{tier.title}</span>
-                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${tier.badgeColor}`}>
-                                  {tier.badge}
-                                </span>
-                              </div>
-                              <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 leading-snug truncate sm:whitespace-normal">
-                                {tier.description}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="text-right shrink-0 pl-2">
-                            <span className="text-base sm:text-xl font-black text-[#0077b6]">{tier.price}</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* CTA Button */}
-                  <div className="flex justify-center">
-                    <motion.button
-                      whileHover={{ scale: 1.04 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={onOpenContact}
-                      className="px-6 py-2.5 sm:py-3 rounded-xl font-black text-xs sm:text-sm bg-cyan-300 hover:bg-cyan-200 text-slate-950 shadow-lg shadow-cyan-300/30 flex items-center gap-2 cursor-pointer transition-all"
-                    >
-                      <span>Обсъди твоя проект</span>
-                      <ArrowRight className="w-4 h-4 text-slate-950" />
-                    </motion.button>
-                  </div>
+                  <PricingSection onOpenContact={onOpenContact} />
                 </motion.div>
               </motion.div>
 
