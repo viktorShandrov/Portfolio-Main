@@ -72,7 +72,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
               transition={{
                 type: 'spring',
                 stiffness: 280,
-                damping: 18,
+                damping: 14,
                 delay: 0.3,
               }}
               style={{ zIndex: ARROWS_SETTINGS.zIndex.purpleBadge }}
@@ -98,7 +98,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
               transition={{
                 type: 'spring',
                 stiffness: 280,
-                damping: 18,
+                damping: 14,
                 delay: 0.4,
               }}
               style={{ zIndex: ARROWS_SETTINGS.zIndex.emoji }}
@@ -180,15 +180,16 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Viktor's Official Portrait (Pop-Up Entrance from Bottom) */}
+      {/* Viktor's Official Portrait (Bouncy Spring Pop-Up with Natural Overshoot) */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.65, y: 60 }}
+        initial={{ opacity: 0, scale: 0.25, y: 50 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{
           type: 'spring',
-          stiffness: 240,
-          damping: 22,
-          delay: 0.2,
+          stiffness: 190,
+          damping: 12,
+          mass: 0.5,
+          delay: 0.15,
         }}
         style={{
           zIndex: ARROWS_SETTINGS.zIndex.portrait,
