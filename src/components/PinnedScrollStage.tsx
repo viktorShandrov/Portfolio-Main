@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-mot
 import { HeroIntroSection } from './HeroIntroSection';
 import { ViktorStickyVisual } from './ViktorStickyVisual';
 import { PurpleStatementSection } from './PurpleStatementSection';
-import { ProjectsGrid } from './ProjectsGrid';
+import { Projects3DStage } from './Projects3DStage';
 import { PricingSection } from './PricingSection';
 import { CertificatesSection } from './CertificatesSection';
 import { TestimonialsSection } from './TestimonialsSection';
@@ -120,25 +120,16 @@ export const PinnedScrollStage: React.FC<PinnedScrollStageProps> = ({
         </motion.div>
       </div>
 
-      {/* 2. Real Vertical Scrolling Content Flow (Projects, Prices, Certificates, Testimonials) */}
+      {/* 2. Pinned 3D Projects Showcase Section */}
+      <section id="projects-section" className="w-full">
+        <Projects3DStage
+          projects={projects}
+          onSelectProject={onSelectProject}
+        />
+      </section>
+
+      {/* 3. Real Vertical Scrolling Content Flow (Prices, Certificates, Testimonials, Footer) */}
       <div className="w-full bg-[#a424c4] text-slate-900 relative z-30">
-        
-        {/* Section 1: Projects Showcase */}
-        <motion.section
-          id="projects-section"
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="w-full py-16 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto flex items-center justify-center"
-        >
-          <div className="w-full">
-            <ProjectsGrid
-              projects={projects}
-              onSelectProject={onSelectProject}
-            />
-          </div>
-        </motion.section>
 
         {/* Section 2: Prices & Packages */}
         <motion.section
