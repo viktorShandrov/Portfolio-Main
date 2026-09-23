@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export const ARROWS_SETTINGS = {
   zIndex: {
-    portrait: 20,
     arrowsContainer: 10,
     greenArrow: 11,
     orangeArrow: 12,
     lavenderArrow: 13,
+    portrait: 20,
+    purpleBadge: 25,
+    emoji: 25,
   },
   rightPosition: 'right-[6%] sm:right-[10%] lg:right-[8%] xl:right-[5%]',
   bottomPosition: 'bottom-0 sm:bottom-4 lg:bottom-0',
@@ -27,7 +29,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
   return (
     <div className="relative w-full h-full min-h-[500px] lg:h-screen flex items-end justify-end select-none overflow-visible">
       
-      {/* 3 Layered Overlapping Arrows Container (With Pop-Out shrink down-right exit) */}
+      {/* 3 Layered Overlapping Arrows & Floating Badges Container (With Pop-Out exit) */}
       <AnimatePresence>
         {showArrows && (
           <motion.div
@@ -63,16 +65,56 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
             style={{ zIndex: ARROWS_SETTINGS.zIndex.arrowsContainer }}
             className={`absolute ${ARROWS_SETTINGS.rightPosition} ${ARROWS_SETTINGS.bottomPosition} ${ARROWS_SETTINGS.scale} pointer-events-none w-[340px] sm:w-[440px] lg:w-[480px] xl:w-[540px] aspect-square flex items-end justify-end`}
           >
-            {/* Subtle Lavender Code Pill Badge (`</>`) */}
+            {/* Top-Left: Purple Badge with Pop-Up Entrance & Continuous Spin */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.4 }}
-              className="absolute bottom-6 left-[0%] sm:left-[5%] z-15 w-16 h-12 sm:w-20 sm:h-16 rounded-2xl sm:rounded-3xl bg-[#ede9fe] shadow-xs flex items-center justify-center border border-purple-100"
+              transition={{
+                type: 'spring',
+                stiffness: 280,
+                damping: 18,
+                delay: 0.3,
+              }}
+              style={{ zIndex: ARROWS_SETTINGS.zIndex.purpleBadge }}
+              className="absolute top-[10%] left-[50%] sm:left-[-50%] w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 pointer-events-auto"
             >
-              <span className="text-white font-black text-lg sm:text-2xl tracking-tight drop-shadow-xs select-none">
-                &lt;/&gt;
-              </span>
+              <motion.img
+                src="/assets/purple_badge.png"
+                alt="Purple Badge"
+                animate={{ rotate: 360 }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 14,
+                  ease: 'linear',
+                }}
+                className="w-full h-full object-contain drop-shadow-md select-none"
+              />
+            </motion.div>
+
+            {/* Bottom-Left: Yellow Smiling Emoji with Pop-Up Entrance & Continuous Spin */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                type: 'spring',
+                stiffness: 280,
+                damping: 18,
+                delay: 0.4,
+              }}
+              style={{ zIndex: ARROWS_SETTINGS.zIndex.emoji }}
+              className="absolute bottom-[10%] left-[0%] sm:left-[25%] w-12 h-12 sm:w-20 sm:h-20 lg:w-20 lg:h-20 pointer-events-auto"
+            >
+              <motion.img
+                src="/assets/emoji_smile.png"
+                alt="Smiling Emoji"
+                animate={{ rotate: 360 }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 12,
+                  ease: 'linear',
+                }}
+                className="w-full h-full object-contain drop-shadow-md select-none"
+              />
             </motion.div>
 
             {/* Overlapping Arrows Box */}
@@ -81,7 +123,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
               <motion.div
                 initial={{ opacity: 0, x: -60, y: 60 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
                 style={{
                   right: ARROWS_SETTINGS.lavender.right,
                   top: ARROWS_SETTINGS.lavender.top,
@@ -100,7 +142,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
               <motion.div
                 initial={{ opacity: 0, x: -60, y: 60 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
                 style={{
                   right: ARROWS_SETTINGS.orange.right,
                   top: ARROWS_SETTINGS.orange.top,
@@ -119,7 +161,7 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
               <motion.div
                 initial={{ opacity: 0, x: -60, y: 60 }}
                 animate={{ opacity: 1, x: 0, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+                transition={{ duration: 0.5, delay: 0.9 }}
                 style={{
                   right: ARROWS_SETTINGS.green.right,
                   top: ARROWS_SETTINGS.green.top,
@@ -138,17 +180,21 @@ export const ViktorStickyVisual: React.FC<ViktorStickyVisualProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Viktor's Official Portrait (Pinned in foreground) */}
+      {/* Viktor's Official Portrait (Pop-Up Entrance from Bottom) */}
       <motion.div
-        initial={{ opacity: 0, x: 80 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, scale: 0.65, y: 60 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{
-          delay: 0.3,
-          duration: 0.85,
-          ease: [0.22, 1, 0.36, 1],
+          type: 'spring',
+          stiffness: 240,
+          damping: 22,
+          delay: 0.2,
         }}
-        style={{ zIndex: ARROWS_SETTINGS.zIndex.portrait }}
-        className="relative w-full h-full flex items-end justify-end pointer-events-none"
+        style={{
+          zIndex: ARROWS_SETTINGS.zIndex.portrait,
+          transformOrigin: 'bottom right',
+        }}
+        className="relative w-full h-full flex items-end justify-end pointer-events-none origin-bottom-right"
       >
         <img
           src="/assets/blue.png"
